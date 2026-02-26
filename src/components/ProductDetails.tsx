@@ -1,16 +1,17 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useProduct } from '../hooks/useApi';
-import { Product } from '../types';
+import { useParams, useNavigate } from "react-router-dom";
+import { useProduct } from "../hooks/useApi";
+import { useAppDispatch } from "../hooks/storeHooks";
+import { addToCart } from "../store/cartSlice";
 
-interface ProductDetailPageProps {
-  onAddToCart: (product: Product) => void;
-}
+export default function ProductDetailPage() {
+  
+  const { id } = useParams();
+  const productId = id ? Number(id) : undefined;
+  const { product, loading, error } = useProduct(productId);
 
-export default function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
-  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
-  const { product, loading, error } = useProduct(Number(id));
-
   const stars = product ? Math.round(product.rating.rate) : 0;
 
   if (loading) {
@@ -34,9 +35,11 @@ export default function ProductDetailPage({ onAddToCart }: ProductDetailPageProp
   if (error || !product) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-24 text-center">
-        <p className="text-red-400 font-body mb-6">{error ?? 'Produit introuvable.'}</p>
+        <p className="text-red-400 font-body mb-6">
+          {error ?? "Produit introuvable."}
+        </p>
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="bg-stone-900 text-white px-6 py-3 rounded-xl font-body font-medium hover:bg-amber-500 transition-colors cursor-pointer"
         >
           ← Retour à la boutique
@@ -47,20 +50,28 @@ export default function ProductDetailPage({ onAddToCart }: ProductDetailPageProp
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 pb-20">
-
       {/* Bouton retour */}
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-stone-400 hover:text-stone-700 font-body text-sm mb-10 transition-colors cursor-pointer group"
       >
-        <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <svg
+          className="w-4 h-4 group-hover:-translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
         Retour
       </button>
 
       <div className="flex flex-col md:flex-row gap-12 items-start">
-
         {/* Image */}
         <div className="w-full md:w-96 flex-shrink-0">
           <div className="bg-stone-50 rounded-3xl p-10 flex items-center justify-center h-80 border border-stone-100">
@@ -74,7 +85,6 @@ export default function ProductDetailPage({ onAddToCart }: ProductDetailPageProp
 
         {/* Infos */}
         <div className="flex-1">
-
           <span className="inline-block bg-amber-100 text-amber-800 text-xs font-body font-medium px-3 py-1 rounded-full capitalize mb-4">
             {product.category}
           </span>
@@ -87,7 +97,12 @@ export default function ProductDetailPage({ onAddToCart }: ProductDetailPageProp
           <div className="flex items-center gap-3 mb-6">
             <div className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
-                <svg key={i} className={`w-4 h-4 ${i < stars ? 'text-amber-400' : 'text-stone-200'}`} fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  key={i}
+                  className={`w-4 h-4 ${i < stars ? "text-amber-400" : "text-stone-200"}`}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               ))}
@@ -111,7 +126,7 @@ export default function ProductDetailPage({ onAddToCart }: ProductDetailPageProp
               ${product.price.toFixed(2)}
             </span>
             <button
-              onClick={() => onAddToCart(product)}
+              onClick={() => dispatch(addToCart({ ...product, quantity: 1 }))}
               className="flex items-center gap-2 bg-stone-900 text-white font-body font-medium px-6 py-3 rounded-xl hover:bg-amber-500 transition-colors duration-200 cursor-pointer text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">

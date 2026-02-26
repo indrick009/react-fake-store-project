@@ -1,19 +1,22 @@
-import { Product } from "../types";
 import ProductCard from "./../components/ProductCard";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../hooks/storeHooks";
+import { addToCart } from "../store/cartSlice";
 
 import { useProducts, useCategories } from "./../hooks/useApi";
 
 interface HomeProductProps {
-  handleAddToCart: (product: Product) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
 }
 
 export default function HomeProduct(props: HomeProductProps) {
-  const { selectedCategory, setSelectedCategory, handleAddToCart } = props;
+
+  const { selectedCategory, setSelectedCategory } = props;
   const navigate = useNavigate();
-  // Appels API
+
+  const dispatch = useAppDispatch();
+  
   const {
     products,
     loading: loadingProducts,
@@ -21,17 +24,19 @@ export default function HomeProduct(props: HomeProductProps) {
   } = useProducts(selectedCategory || undefined);
   const { categories, loading: loadingCats } = useCategories();
 
-  
   return (
     <div>
       {/* Hero */}
-      <section className="bg-stone-900 text-white py-16 px-4 text-center">
-        <p className="text-amber-400 font-body font-medium text-sm tracking-widest uppercase mb-3">
-          Bienvenue sur
-        </p>
-        <h1 className="font-display text-4xl sm:text-5xl font-bold mb-4">
-          FakeStore Boutique
-        </h1>
+      <section className="h-[320px] relative bg-[url('https://media.istockphoto.com/id/2155795543/photo/a-back-view-of-a-woman-holding-shopping-bags-in-front-of-a-store-window.jpg?s=2048x2048&w=is&k=20&c=WIkI5826AKsZ0Q7Ggc-KB5AiWzAGLcjdyEoNIgOZkyM=')] bg-cover bg-center  text-white py-16 px-4 text-center">
+        <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute bg-stone-900/50"></div>
+        <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute flex flex-col items-center justify-center">
+          <p className="text-amber-400 font-body font-medium text-sm tracking-widest uppercase mb-3">
+            Bienvenue sur
+          </p>
+          <h1 className="font-display text-4xl sm:text-5xl font-bold mb-4">
+            Mirashop Boutique
+          </h1>
+        </div>
       </section>
 
       {/* Filtres catégories */}
@@ -104,7 +109,9 @@ export default function HomeProduct(props: HomeProductProps) {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onAddToCart={handleAddToCart}
+                  onAddToCart={() =>
+                    dispatch(addToCart({ ...product, quantity: 1 }))
+                  }
                   onViewDetails={(id) => navigate(`/product/${id}`)}
                 />
               ))}
