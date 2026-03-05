@@ -33,7 +33,6 @@ export class ProductHttpGateway implements ProductGateway {
     const result = await this.httpProvider
       .get(productsRoutes.getDetailsProduct(command))
       .then((res) => res.json());
-      console.log("==========productdetails",result)
     return ProductFactory.buildProductFromApi(result);
   }
 }

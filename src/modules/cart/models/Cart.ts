@@ -1,16 +1,28 @@
-import { createEntityAdapter } from "@reduxjs/toolkit";
-import { Product } from "../../products/models/products/productEntity";
 
 export interface CartProduct {
-  product: Product;
+  id: number;
+  title: string;
+  price: number;
   quantity: number;
+  total: number;
+  discountPercentage: number;
+  discountedTotal: number;
+  thumbnail: string;
 }
 
 export interface Cart {
-  id: string;
+  id: number;
   userId: number;
-  date: string;
+  total: number;         
+  discountedTotal: number;
+  totalProducts: number; 
+  totalQuantity: number; 
   products: CartProduct[];
 }
 
-export const CartEntityAdapter=createEntityAdapter<Cart>()
+export interface GetAllCartsResponse {
+  carts: Cart[];
+  total: number;
+  skip: number;
+  limit: number;
+}

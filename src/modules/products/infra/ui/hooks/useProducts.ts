@@ -23,7 +23,10 @@ export const useProducts = () => {
     ProductSelector.productDetailsError,
   );
 
-  const queryPagination = useQueryPagination();
+  const queryPagination = useQueryPagination({
+    initialLimit: 10,
+    initialPage: 1,
+  });
 
   const debounceSearch = useDebounce(searchTerm, 800);
 
@@ -54,13 +57,18 @@ export const useProducts = () => {
     allProducts,
     loadingProducts,
     error,
-
     selectedProduct,
     loadingProductDetails,
     errorProductDetails,
-
     getProductDetails,
     selectedCategory: queryPagination.selectedCategory,
+    page: queryPagination.page,
+    limit: queryPagination.limit,
+    handlePageChange: (nextPage: number) =>
+      queryPagination.handleQueryPaginationData(nextPage, queryPagination.limit),
+    handleLimitChange: (nextLimit: number) =>
+      queryPagination.handleQueryPaginationData(1, nextLimit),
+    searchTerm,
     handleSearch,
     setCategories,
   };

@@ -1,26 +1,32 @@
-import { useCarts } from "./hooks/useCarts";
+import { Cart as CartModel } from "../../models/Cart";
 
-
-export default function Cart() {
-
-const { allCarts, onClose } = useCarts();
+export default function Cart({
+  cart,
+  onCartClick,
+  onUpdateQuantity,
+  onRemoveItem,
+  onClearCart,
+}: {
+  cart: CartModel | null;
+  onCartClick: () => void;
+  onUpdateQuantity: (productId: number, quantity: number) => void;
+  onRemoveItem: (productId: number) => void;
+  onClearCart: () => void;
+}) {
   return (
     <>
-      {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
-        onClick={onClose}
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 h-screen"
+        onClick={onCartClick}
       />
 
-      {/* Drawer */}
-      <aside className="fixed right-0 top-0 h-full w-full max-w-sm bg-white z-50 shadow-2xl flex flex-col">
-        {/* Header */}
+      <aside className="fixed right-0 top-0 h-screen w-full max-w-sm bg-white z-50 shadow-2xl flex flex-col border-l border-stone-200">
         <div className="flex items-center justify-between px-6 py-5 border-b border-stone-100">
           <h2 className="font-display text-xl font-bold text-stone-900">
             Mon Panier
           </h2>
           <button
-            onClick={onClose}
+            onClick={onCartClick}
             className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center hover:bg-stone-200 transition-colors cursor-pointer"
           >
             <svg
@@ -39,9 +45,8 @@ const { allCarts, onClose } = useCarts();
           </button>
         </div>
 
-        {/* Liste des articles */}
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-          {allCarts.length === 0 ? (
+          {(cart?.products?.length ?? 0) === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-stone-400">
               <svg
                 className="w-16 h-16 text-stone-200"
@@ -59,13 +64,10 @@ const { allCarts, onClose } = useCarts();
               <p className="font-body text-sm">Votre panier est vide</p>
             </div>
           ) : (
-            allCarts.map((item) => (
-              <div
-                key={item.id}
-                className="flex gap-3 p-3 bg-stone-50 rounded-xl"
-              >
+            (cart?.products ?? []).map((item) => (
+              <div key={item.id} className="flex gap-3 p-3 bg-stone-50 rounded-xl">
                 <img
-                  src={item.image}
+                  src={item.thumbnail}
                   alt={item.title}
                   className="w-14 h-14 object-contain bg-white rounded-lg p-1 flex-shrink-0"
                 />
@@ -77,39 +79,24 @@ const { allCarts, onClose } = useCarts();
                     ${item.price.toFixed(2)}
                   </p>
 
-                  {/* Contrôle quantité */}
                   <div className="flex items-center gap-2 mt-2">
                     <button
-                      onClick={() =>
-                        dispatch(
-                          updateQuantity({
-                            id: item.id,
-                            quantity: item.quantity - 1,
-                          }),
-                        )
-                      }
+                      onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
                       className="w-6 h-6 rounded-full bg-white border border-stone-200 text-stone-700 text-sm flex items-center justify-center hover:bg-stone-100 cursor-pointer"
                     >
-                      −
+                      -
                     </button>
                     <span className="font-body text-sm font-medium w-4 text-center">
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() =>
-                        dispatch(
-                          updateQuantity({
-                            id: item.id,
-                            quantity: item.quantity + 1,
-                          }),
-                        )
-                      }
+                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                       className="w-6 h-6 rounded-full bg-white border border-stone-200 text-stone-700 text-sm flex items-center justify-center hover:bg-stone-100 cursor-pointer"
                     >
                       +
                     </button>
                     <button
-                      onClick={() => dispatch(removeFromCart(item.id))}
+                      onClick={() => onRemoveItem(item.id)}
                       className="ml-auto text-red-400 hover:text-red-600 cursor-pointer"
                     >
                       <svg
@@ -133,17 +120,19 @@ const { allCarts, onClose } = useCarts();
           )}
         </div>
 
-        {/* Footer total */}
-        {allCarts.length > 0 && (
+        {(cart?.products?.length ?? 0) > 0 && (
           <div className="px-6 py-5 border-t border-stone-100 space-y-3">
             <div className="flex justify-between items-center">
               <span className="font-body text-stone-500">Total</span>
               <span className="font-display text-2xl font-bold text-stone-900">
-                ${total.toFixed(2)}
+                ${cart?.total.toFixed(2)}
               </span>
             </div>
-            <button className="w-full bg-amber-400 text-stone-900 font-body font-semibold py-3 rounded-xl hover:bg-amber-500 transition-colors cursor-pointer">
-              Passer la commande
+            <button
+              onClick={onClearCart}
+              className="w-full bg-stone-900 text-white font-body font-semibold py-3 rounded-xl hover:bg-stone-700 transition-colors cursor-pointer"
+            >
+              Vider le panier
             </button>
           </div>
         )}

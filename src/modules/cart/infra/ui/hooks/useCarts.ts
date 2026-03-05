@@ -1,46 +1,59 @@
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../../config/hooks";
+import { ProfileSelectors } from "../../../../profile/slice/ProfileSelector";
+import {
+  addToCart,
+  clearCart,
+  closeCart,
+  removeFromCart,
+  toggleCart,
+  updateCartQuantity,
+} from "../../../slice/CartSlice";
+import { Product } from "../../../../products/models/products/productEntity";
 import { CartsSelector } from "../../../slice/CartSelector";
-import { GetAllCartsAsync } from "../../../use-case/get-all-cart/GetAllCartAsync";
-import { useAuth } from "../../../../auth/infra/ui/hooks/useAuth";
 
-export const useCarts = () => {
+export const useCart = () => {
   const dispatch = useAppDispatch();
-  const allCarts = useAppSelector(CartsSelector.SelectAllCarts);
-  const loadingCarts = useAppSelector(CartsSelector.getLoadingState);
-  const error = useAppSelector(CartsSelector.error);
-  const { isAuthenticated } = useAuth();
 
-  //   const getProductDetails = useCallback(
-  //     (id: number) => {
-  //       return dispatch(GetSingleProductAsync({ id }));
-  //     },
-  //     [dispatch],
-  //   );
+  const cart = useAppSelector(CartsSelector.cart);
+  const isCartOpen = useAppSelector(CartsSelector.isOpen);
+  const totalQuantity = useAppSelector(CartsSelector.totalQuantity);
+  const currentUser = useAppSelector(ProfileSelectors.currentUser);
 
-  function addTocart() {
-    //   return dispatch(LoginAsync(payload));
+  function addTocart(product: Product) {
+    dispatch(addToCart({ userId: currentUser?.id, product }));
   }
 
   function onCartClick() {
-    //   return dispatch(LoginAsync(payload));
+    dispatch(toggleCart());
   }
 
-  useEffect(() => {
-    if(!isAuthenticated){
-      return;
-    }
-    dispatch(GetAllCartsAsync());
-  }, []);
+  function onCloseCart() {
+    dispatch(closeCart());
+  }
 
+  function onUpdateQuantity(productId: number, quantity: number) {
+    dispatch(updateCartQuantity({ productId, quantity }));
+  }
+
+  function onRemoveItem(productId: number) {
+    dispatch(removeFromCart({ productId }));
+  }
+
+  function onClearCart() {
+    dispatch(clearCart());
+  }
 
   return {
-    allCarts,
-    loadingCarts,
-    error,
+    cart,
+    totalQuantity,
+    isCartOpen,
+    onCartClick,
+    onCloseCart,
     addTocart,
-    onCartClick
+    onUpdateQuantity,
+    onRemoveItem,
+    onClearCart,
   };
 };
 
-export type UseCartsBehavoir = ReturnType<typeof useCarts>;
+export type UseCartsBehavoir = ReturnType<typeof useCart>;

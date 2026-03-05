@@ -9,6 +9,7 @@ export const rootReducer = combineReducers({
   productReducer: ProductSlice.reducer,
   loginReducer: LoginSlice.reducer,
   cartReducer: CartSlice.reducer,
+  addToCartReducer: CartSlice.reducer,
   profileReducer: ProfileSlice.reducer,
   categoriesReducer: CategoriesSlice.reducer,
 });

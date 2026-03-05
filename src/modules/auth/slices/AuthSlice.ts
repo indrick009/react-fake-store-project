@@ -36,7 +36,10 @@ export const LoginSlice = createSlice({
       })
       .addCase(LoginAsync.rejected, (state, action) => {
         state.loading = LoadingState.failed;
-        state.error = action.error.message ?? "Erreur inconnue";
+        state.error =
+          ((action.payload as { message?: string } | undefined)?.message ??
+            action.error.message ??
+            "Erreur inconnue");
       });
   },
 });

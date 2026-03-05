@@ -1,18 +1,30 @@
+import { twMerge } from "tailwind-merge";
 import { Product } from "../../../models/products/productEntity";
 
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
   onViewDetails?: (id: number) => void;
+  loadingAddToCart: boolean;
+  className?: string;
 }
 
-export default function ProductCard({ product, onAddToCart, onViewDetails }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  onAddToCart,
+  onViewDetails,
+  loadingAddToCart,
+  className,
+}: ProductCardProps) {
   const stars = Math.round(product.rating.rate);
 
   return (
     <div
       onClick={() => onViewDetails?.(product.id)}
-      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-stone-100 cursor-pointer"
+      className={twMerge(
+        "group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col border border-stone-100 cursor-pointer",
+        className,
+      )}
     >
       {/* Image */}
       <div className="relative bg-stone-50 p-6 flex items-center justify-center h-32 md:h-52 overflow-hidden">
@@ -22,7 +34,7 @@ export default function ProductCard({ product, onAddToCart, onViewDetails }: Pro
           className="h-30 md:h-40 w-auto object-contain group-hover:scale-110 transition-transform duration-500"
         />
         {/* Badge catégorie */}
-        <span className="absolute top-3 left-3 text-xs font-body font-medium bg-amber-100 text-amber-800 px-2 py-1 rounded-full capitalize">
+        <span className="absolute top-3 left-3 text-xs font-body font-medium bg-stone-100 text-stone-700 px-2 py-1 rounded-full capitalize">
           {product.category}
         </span>
       </div>
@@ -39,7 +51,7 @@ export default function ProductCard({ product, onAddToCart, onViewDetails }: Pro
             {Array.from({ length: 5 }).map((_, i) => (
               <svg
                 key={i}
-                className={`w-3.5 h-3.5 ${i < stars ? 'text-amber-400' : 'text-stone-200'}`}
+                className={`w-3.5 h-3.5 ${i < stars ? "text-amber-400" : "text-stone-200"}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -47,7 +59,9 @@ export default function ProductCard({ product, onAddToCart, onViewDetails }: Pro
               </svg>
             ))}
           </div>
-          <span className="text-xs text-stone-400 font-body">({product.rating.count})</span>
+          <span className="text-xs text-stone-400 font-body">
+            ({product.rating.count})
+          </span>
         </div>
 
         {/* Prix & bouton */}
@@ -60,9 +74,35 @@ export default function ProductCard({ product, onAddToCart, onViewDetails }: Pro
               e.stopPropagation();
               onAddToCart(product);
             }}
-            className="bg-stone-900 text-white text-xs font-body font-medium px-4 py-2 rounded-xl hover:bg-amber-500 transition-colors duration-200 cursor-pointer"
+            disabled={loadingAddToCart}
+            className="bg-stone-900 text-white text-xs font-body font-medium px-4 py-2 rounded-xl hover:bg-stone-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            + Panier
+            {loadingAddToCart ? (
+              <span className="flex items-center gap-1">
+                <svg
+                  className="w-3 h-3 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
+                </svg>
+                ...
+              </span>
+            ) : (
+              "+ Panier"
+            )}
           </button>
         </div>
       </div>

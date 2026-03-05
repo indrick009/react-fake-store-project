@@ -11,7 +11,6 @@ export const GetAllProductsAsync = createAppAsyncThunk<
 >(
   "products/all",
   async (command, { extra: { productsGateway }, rejectWithValue }) => {
-    console.log("command",command)
     return apiMiddleware({
       apiCall: productsGateway.getAllProducts(command),
       rejectWithValue,

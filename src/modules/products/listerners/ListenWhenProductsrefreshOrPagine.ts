@@ -10,7 +10,7 @@ export const listenWhenProductsRefreshOrPagine = () => {
   isProfileListenerRegistered = true;
 
   startAppListening({
-     actionCreator: ProductsActions,
+    actionCreator: ProductsActions,
     effect: async (action, { dispatch, getState }) => {
       if (getState().productReducer.loading === LoadingState.pending) return;
       dispatch(GetAllProductsAsync(action.payload));

@@ -1,6 +1,10 @@
 import { BACK_END_APP_URL } from "../../config/env";
 import { getAppStoreState } from "../../config/storeAccessor";
+import { ErrorException } from "../exceptions/ErrorException";
+import { InternetErrorException } from "../exceptions/InternetErrorException";
 import InternalServerException from "../exceptions/InternalServerException";
+import NotFoundException from "../exceptions/NotFoundException";
+import { ValidationErrorException } from "../exceptions/ValidationErrorException";
 import type { HttpClient, PostOptions } from "../gateway/HttpClient";
 
 type TokenBundle = {
@@ -11,7 +15,10 @@ type TokenBundle = {
 class FetchHttpClient implements HttpClient {
   private readonly refreshPath = "/auth/refresh";
   private refreshPromise: Promise<string | null> | null = null;
-  private runtimeTokens: TokenBundle = { accessToken: null, refreshToken: null };
+  private runtimeTokens: TokenBundle = {
+    accessToken: null,
+    refreshToken: null,
+  };
 
   post(url: string, data: Object, options?: PostOptions): Promise<Response> {
     return this.fetchData(url, options?.includeCred ?? true, {
@@ -46,12 +53,21 @@ class FetchHttpClient implements HttpClient {
       headers.set("Authorization", `Bearer ${tokens.accessToken}`);
     }
 
-    let response = await this.executeRequest(fetchUrl, includeCred, {
-      ...requestInit,
-      headers,
-    });
+    let response: Response;
+    try {
+      response = await this.executeRequest(fetchUrl, includeCred, {
+        ...requestInit,
+        headers,
+      });
+    } catch {
+      throw new InternetErrorException();
+    }
 
-    if (response.status === 401 && tokens.refreshToken && !this.isRefreshPath(fetchUrl)) {
+    if (
+      response.status === 401 &&
+      tokens.refreshToken &&
+      !this.isRefreshPath(fetchUrl)
+    ) {
       const refreshedAccessToken = await this.refreshAccessToken(
         tokens.refreshToken,
         includeCred,
@@ -59,17 +75,21 @@ class FetchHttpClient implements HttpClient {
 
       if (refreshedAccessToken) {
         headers.set("Authorization", `Bearer ${refreshedAccessToken}`);
-        response = await this.executeRequest(fetchUrl, includeCred, {
-          ...requestInit,
-          headers,
-        });
+        try {
+          response = await this.executeRequest(fetchUrl, includeCred, {
+            ...requestInit,
+            headers,
+          });
+        } catch {
+          throw new InternetErrorException();
+        }
       } else {
         this.persistTokens({ accessToken: null, refreshToken: null });
       }
     }
 
-    if (response.status === 500 || response.status === 405) {
-      throw new InternalServerException();
+    if (!response.ok) {
+      throw await this.getHttpException(response);
     }
 
     return response;
@@ -98,9 +118,11 @@ class FetchHttpClient implements HttpClient {
   ): Promise<string | null> {
     if (this.refreshPromise) return this.refreshPromise;
 
-    this.refreshPromise = this.doRefresh(refreshToken, includeCred).finally(() => {
-      this.refreshPromise = null;
-    });
+    this.refreshPromise = this.doRefresh(refreshToken, includeCred).finally(
+      () => {
+        this.refreshPromise = null;
+      },
+    );
 
     return this.refreshPromise;
   }
@@ -127,7 +149,10 @@ class FetchHttpClient implements HttpClient {
 
     if (!newAccessToken) return null;
 
-    this.persistTokens({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+    this.persistTokens({
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
     return newAccessToken;
   }
 
@@ -142,6 +167,35 @@ class FetchHttpClient implements HttpClient {
 
   private persistTokens(tokens: TokenBundle): void {
     this.runtimeTokens = tokens;
+  }
+
+  private async getHttpException(response: Response) {
+    if (response.status === 500 || response.status === 405) {
+      return new InternalServerException();
+    }
+
+    const body = await response.json().catch(() => ({}));
+    const message =
+      body?.message ?? body?.error ?? `HTTP error ${response.status}`;
+
+    switch (response.status) {
+      case 404:
+        return new NotFoundException(message);
+
+      case 400:
+      case 422:
+        return new ValidationErrorException(message);
+
+      case 401:
+      case 403: {
+        const authException = new ErrorException(message);
+        authException.type = "AuthErrorException";
+        return authException;
+      }
+
+      default:
+        return new ErrorException(message);
+    }
   }
 }
 
