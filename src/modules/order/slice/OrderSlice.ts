@@ -8,6 +8,7 @@ import { PayOrderAsync } from "../use-case/pay-order/PayOrderAsync";
 import { listenWhenOrderRefresh } from "../listerners/ListenWhenOrderRefresh";
 
 type OrderState = {
+  isOpen: boolean;
   currentOrder: Order | null;
   loading: LoadingState;
   error: string | null;
@@ -16,6 +17,7 @@ type OrderState = {
 };
 
 const initialOrderState: OrderState = {
+  isOpen: false,
   currentOrder: null,
   loading: LoadingState.idle,
   error: null,
@@ -27,8 +29,17 @@ export const OrderSlice = createSlice({
   name: "order-slice",
   initialState: initialOrderState,
   reducers: {
+    toggleOrder(state) {
+      state.isOpen = !state.isOpen;
+    },
+    closeOrder(state) {
+      state.isOpen = false;
+    },
     clearOrderState() {
-      return initialOrderState;
+      return {
+        ...initialOrderState,
+        isOpen: false,
+      };
     },
     restartPaymentFlow(state) {
       const current = resolvePaymentState(state.paymentStatus);
@@ -86,7 +97,7 @@ export const OrderSlice = createSlice({
   },
 });
 
-export const { clearOrderState, restartPaymentFlow } = OrderSlice.actions;
+export const { toggleOrder, closeOrder, clearOrderState, restartPaymentFlow } =
+  OrderSlice.actions;
 
 listenWhenOrderRefresh();
-

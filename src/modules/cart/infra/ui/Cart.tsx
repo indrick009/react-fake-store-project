@@ -6,12 +6,14 @@ export default function Cart({
   onUpdateQuantity,
   onRemoveItem,
   onClearCart,
+  onCheckout,
 }: {
   cart: CartModel | null;
   onCartClick: () => void;
   onUpdateQuantity: (productId: number, quantity: number) => void;
   onRemoveItem: (productId: number) => void;
   onClearCart: () => void;
+  onCheckout: () => void;
 }) {
   return (
     <>
@@ -137,7 +139,7 @@ export default function Cart({
             </div>
             <div className="flex items-center space-x-2">
               <button
-                // onClick={onClearCart}
+                onClick={onCheckout}
                 className="w-full bg-stone-900 text-white font-body font-semibold py-3 rounded-xl hover:bg-stone-700 transition-colors cursor-pointer"
               >
                 Poursuivre la commande

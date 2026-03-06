@@ -1,13 +1,19 @@
 import { useAppDispatch, useAppSelector } from "../../../../../config/hooks";
 import { CreateOrderActions, PayOrderActions } from "../../../actions/GetOrderActions";
 import { OrderSelectors } from "../../../slice/OrderSelector";
-import { clearOrderState, restartPaymentFlow } from "../../../slice/OrderSlice";
+import {
+  clearOrderState,
+  closeOrder,
+  restartPaymentFlow,
+  toggleOrder,
+} from "../../../slice/OrderSlice";
 import type { CreateOrderCommand } from "../../../use-case/create-order/CreateOrderCommand";
 import type { PayOrderCommand } from "../../../use-case/pay-order/PayOrderCommand";
 
 export const useOrder = () => {
   const dispatch = useAppDispatch();
 
+  const isOrderOpen = useAppSelector(OrderSelectors.isOpen);
   const currentOrder = useAppSelector(OrderSelectors.currentOrder);
   const loading = useAppSelector(OrderSelectors.loading);
   const error = useAppSelector(OrderSelectors.error);
@@ -30,7 +36,16 @@ export const useOrder = () => {
     dispatch(restartPaymentFlow());
   };
 
+  const onOrderClick = () => {
+    dispatch(toggleOrder());
+  };
+
+  const onCloseOrder = () => {
+    dispatch(closeOrder());
+  };
+
   return {
+    isOrderOpen,
     currentOrder,
     loading,
     error,
@@ -40,8 +55,9 @@ export const useOrder = () => {
     submitPayment,
     clearOrder,
     resetPayment,
+    onOrderClick,
+    onCloseOrder,
   };
 };
 
 export type UseOrderBehavior = ReturnType<typeof useOrder>;
-

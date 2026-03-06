@@ -6,11 +6,14 @@ import UserAvatar from "./UserAvatar";
 import Cart from "../../modules/cart/infra/ui/Cart";
 import Profile from "../../modules/profile/infra/ui/Profile";
 import { useProfile } from "../../modules/profile/infra/ui/hooks/useProfile";
+import Order from "../../modules/order/infra/ui/Order";
+import { useOrder } from "../../modules/order/infra/ui/hooks/useOrder";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { isProfileOpen, onCloseProfile, onProfileClick } = useProfile();
+  const { isOrderOpen, onOrderClick, onCloseOrder } = useOrder();
   const {
     cart,
     totalQuantity,
@@ -21,6 +24,11 @@ export default function Navbar() {
     onRemoveItem,
     onClearCart,
   } = useCart();
+
+  const handleCheckoutClick = () => {
+    onCloseCart();
+    onOrderClick();
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-100 shadow-sm">
@@ -70,6 +78,14 @@ export default function Navbar() {
           onCartClick={onCloseCart}
           onUpdateQuantity={onUpdateQuantity}
           onRemoveItem={onRemoveItem}
+          onClearCart={onClearCart}
+          onCheckout={handleCheckoutClick}
+        />
+      )}
+      {isAuthenticated && isOrderOpen && (
+        <Order
+          cart={cart}
+          onOrderClick={onCloseOrder}
           onClearCart={onClearCart}
         />
       )}
