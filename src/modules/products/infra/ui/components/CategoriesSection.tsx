@@ -46,7 +46,7 @@ export default function CategoriesSection() {
             <button
               key={cat.slug}
               onClick={() => setCategories(cat.slug)}
-              className={`px-4 py-2 rounded-full text-sm font-body font-medium capitalize transition-colors cursor-pointer whitespace-nowrap flex-shrink-0 ${
+              className={`px-4 py-2 rounded-full text-sm font-body font-medium capitalize  transition-colors cursor-pointer whitespace-nowrap flex-shrink-0 ${
                 selectedCategory === cat.slug
                   ? "bg-stone-900 text-white"
                   : "bg-white text-stone-600 border border-stone-200 hover:border-stone-400"

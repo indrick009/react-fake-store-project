@@ -4,10 +4,13 @@ import { useAuth } from "../../modules/auth/infra/ui/hooks/useAuth";
 import { useCart } from "../../modules/cart/infra/ui/hooks/useCarts";
 import UserAvatar from "./UserAvatar";
 import Cart from "../../modules/cart/infra/ui/Cart";
+import Profile from "../../modules/profile/infra/ui/Profile";
+import { useProfile } from "../../modules/profile/infra/ui/hooks/useProfile";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { isProfileOpen, onCloseProfile, onProfileClick } = useProfile();
   const {
     cart,
     totalQuantity,
@@ -45,7 +48,12 @@ export default function Navbar() {
               )}
             </button>
           )}
-          {isAuthenticated && <UserAvatar />}
+          {isAuthenticated && (
+            <button onClick={onProfileClick}>
+              {" "}
+              <UserAvatar />
+            </button>
+          )}
           {!isAuthenticated && (
             <button
               onClick={() => navigate(ProductRoutes.login)}
@@ -64,6 +72,9 @@ export default function Navbar() {
           onRemoveItem={onRemoveItem}
           onClearCart={onClearCart}
         />
+      )}
+      {isAuthenticated && isProfileOpen && (
+        <Profile onCartClick={onCloseProfile} />
       )}
     </header>
   );

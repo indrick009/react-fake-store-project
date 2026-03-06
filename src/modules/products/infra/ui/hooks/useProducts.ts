@@ -33,7 +33,7 @@ export const useProducts = () => {
   useEffect(() => {
     queryPagination.updateQueryParams({
       search: debounceSearch,
-      page: "1",
+      page: queryPagination.page.toString(),
     });
   }, [debounceSearch]);
 

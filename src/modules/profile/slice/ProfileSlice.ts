@@ -8,36 +8,45 @@ type ProfileState = {
   currentUser: CurrentUser | null;
   loading: LoadingState;
   error: string | null;
+  isOpen: boolean;
 };
 
 const initialAuthState: ProfileState = {
   loading: LoadingState.idle,
   error: null,
   currentUser: null,
+  isOpen: false,
 };
 
 export const ProfileSlice = createSlice({
   name: "profile-slice",
   initialState: initialAuthState,
-  reducers: {},
+  reducers: {
+    toggleProfile(state) {
+      state.isOpen = !state.isOpen;
+    },
+    closeProfile(state) {
+      state.isOpen = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(GetProfileAsync.pending, (state) => {
-        console.log("=========1")
         state.loading = LoadingState.pending;
         state.error = null;
       })
       .addCase(GetProfileAsync.fulfilled, (state, action) => {
-        console.log("=========2",action.payload.currentUser)
         state.loading = LoadingState.success;
         state.currentUser = action.payload.currentUser;
       })
       .addCase(GetProfileAsync.rejected, (state, action) => {
-        console.log("=========3")
         state.loading = LoadingState.failed;
         state.error = action.error.message ?? "Erreur inconnue";
       });
   },
 });
+
+export const { toggleProfile: toggleProfile, closeProfile: closeProfile } =
+  ProfileSlice.actions;
 
 listenWhenProfileRefresh();

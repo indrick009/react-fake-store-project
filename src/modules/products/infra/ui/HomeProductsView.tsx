@@ -6,6 +6,7 @@ import ProductCard from "./components/ProductCard";
 import { useProducts } from "./hooks/useProducts";
 import { FilterSection } from "./components/FilterSection";
 import CategoriesSection from "./components/CategoriesSection";
+import { SearchSection } from "./components/SearchSection";
 
 export default function HomeProductsView() {
   const { allProducts, loadingProducts, error } = useProducts();
@@ -18,13 +19,19 @@ export default function HomeProductsView() {
 
       <section className="h-[320px] relative bg-[url('https://media.istockphoto.com/id/2155795543/photo/a-back-view-of-a-woman-holding-shopping-bags-in-front-of-a-store-window.jpg?s=2048x2048&w=is&k=20&c=WIkI5826AKsZ0Q7Ggc-KB5AiWzAGLcjdyEoNIgOZkyM=')] bg-cover bg-center text-white py-16 px-4 text-center">
         <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute bg-stone-900/50" />
-        <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute flex flex-col items-center justify-center">
-          <p className="text-amber-300 font-body font-medium text-sm tracking-widest uppercase mb-3">
-            Bienvenue sur
-          </p>
-          <h1 className="font-display text-4xl sm:text-5xl font-bold mb-4">
-            Cleanshop Boutique
-          </h1>
+        <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute flex flex-col items-center justify-evenly px-6">
+          <div>
+            <p className="text-amber-300 font-body font-medium text-sm tracking-widest uppercase mb-3">
+              Bienvenue sur
+            </p>
+            <h1 className="font-display text-4xl sm:text-5xl font-bold mb-6">
+              Cleanshop Boutique
+            </h1>
+          </div>
+
+          <div className="w-full max-w-md md:hidden">
+            <SearchSection />
+          </div>
         </div>
       </section>
 
@@ -33,9 +40,6 @@ export default function HomeProductsView() {
           <FilterSection />
 
           <section className="flex-1 min-w-0">
-           
-
-            {/* Categories desktop */}
             <div className=" md:hidden mb-4">
               <CategoriesSection />
             </div>

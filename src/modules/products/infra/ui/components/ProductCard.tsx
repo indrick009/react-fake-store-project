@@ -66,7 +66,7 @@ export default function ProductCard({
 
         {/* Prix & bouton */}
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-stone-100">
-          <span className="font-display text-base md:text-xl font-bold text-stone-900">
+          <span className="font-display text-[12px] md:text-xl font-bold text-stone-900">
             ${product.price.toFixed(2)}
           </span>
           <button
@@ -75,7 +75,7 @@ export default function ProductCard({
               onAddToCart(product);
             }}
             disabled={loadingAddToCart}
-            className="bg-stone-900 text-white text-xs font-body font-medium px-4 py-2 rounded-xl hover:bg-stone-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-stone-900 text-white text-[10px]  md:text-xs font-body font-medium px-4 py-2 rounded-xl hover:bg-stone-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loadingAddToCart ? (
               <span className="flex items-center gap-1">

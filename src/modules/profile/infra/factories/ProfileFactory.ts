@@ -11,6 +11,7 @@ export default class ProfileFactory {
         lastName: data.lastName,
         gender: data.gender,
         image: data.image,
+        phone:data.phone
       },
     };
   }

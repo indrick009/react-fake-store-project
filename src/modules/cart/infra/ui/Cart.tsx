@@ -65,7 +65,10 @@ export default function Cart({
             </div>
           ) : (
             (cart?.products ?? []).map((item) => (
-              <div key={item.id} className="flex gap-3 p-3 bg-stone-50 rounded-xl">
+              <div
+                key={item.id}
+                className="flex gap-3 p-3 bg-stone-50 rounded-xl"
+              >
                 <img
                   src={item.thumbnail}
                   alt={item.title}
@@ -81,7 +84,9 @@ export default function Cart({
 
                   <div className="flex items-center gap-2 mt-2">
                     <button
-                      onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                      onClick={() =>
+                        onUpdateQuantity(item.id, item.quantity - 1)
+                      }
                       className="w-6 h-6 rounded-full bg-white border border-stone-200 text-stone-700 text-sm flex items-center justify-center hover:bg-stone-100 cursor-pointer"
                     >
                       -
@@ -90,7 +95,9 @@ export default function Cart({
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                      onClick={() =>
+                        onUpdateQuantity(item.id, item.quantity + 1)
+                      }
                       className="w-6 h-6 rounded-full bg-white border border-stone-200 text-stone-700 text-sm flex items-center justify-center hover:bg-stone-100 cursor-pointer"
                     >
                       +
@@ -128,12 +135,23 @@ export default function Cart({
                 ${cart?.total.toFixed(2)}
               </span>
             </div>
-            <button
-              onClick={onClearCart}
-              className="w-full bg-stone-900 text-white font-body font-semibold py-3 rounded-xl hover:bg-stone-700 transition-colors cursor-pointer"
-            >
-              Vider le panier
-            </button>
+            <div className="flex items-center space-x-2">
+              <button
+                // onClick={onClearCart}
+                className="w-full bg-stone-900 text-white font-body font-semibold py-3 rounded-xl hover:bg-stone-700 transition-colors cursor-pointer"
+              >
+                Poursuivre la commande
+              </button>
+              <div className="">
+                <button onClick={onClearCart}>
+                  <img
+                    src="./img/delete.svg"
+                    alt="Supprimer le panier"
+                    className="h-[40px] w-[30px]"
+                  />
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </aside>

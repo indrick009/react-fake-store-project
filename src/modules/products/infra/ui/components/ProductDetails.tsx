@@ -3,6 +3,8 @@ import { LoadingState } from "../../../../../shared/domain/enums/LoadingState";
 import { useEffect } from "react";
 import { useProductsDetails } from "../hooks/useProductsDetails";
 import { useCart } from "../../../../cart/infra/ui/hooks/useCarts";
+import { useAuth } from "../../../../auth/infra/ui/hooks/useAuth";
+import { ProductRoutes } from "../../../../../routes/routes";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -13,6 +15,8 @@ export default function ProductDetailPage() {
     errorProductDetails,
     getProductDetails,
   } = useProductsDetails();
+
+  const { isAuthenticated } = useAuth();
 
   const { addTocart } = useCart();
 
@@ -137,7 +141,11 @@ export default function ProductDetailPage() {
             </span>
             <button
               onClick={() => {
-                addTocart(selectedProduct);
+                if (isAuthenticated) {
+                  addTocart(selectedProduct);
+                } else {
+                  navigate(ProductRoutes.login);
+                }
               }}
               className="flex items-center gap-2 bg-stone-900 text-white font-body font-medium px-6 py-3 rounded-xl hover:bg-amber-500 transition-colors duration-200 cursor-pointer text-sm"
             >

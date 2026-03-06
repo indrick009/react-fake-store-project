@@ -13,7 +13,7 @@ const store = createStore(extraArgument);
 setAppStore(store);
 setupListeners(store.dispatch);
 
-const persistor = persistStore(store);
+export const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

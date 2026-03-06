@@ -2,11 +2,10 @@ import { useEffect } from "react";
 import { LoadingState } from "../../../../../shared/domain/enums/LoadingState";
 import { useCategories } from "../hooks/useCategories";
 import { useProducts } from "../hooks/useProducts";
+import { SearchSection } from "./SearchSection";
 
 export function FilterSection() {
   const {
-    searchTerm,
-    handleSearch,
     selectedCategory,
     setCategories,
     page,
@@ -30,18 +29,7 @@ export function FilterSection() {
       </h3>
 
       <div className="space-y-5">
-        <div>
-          <p className="text-xs uppercase tracking-wide text-stone-400 font-body mb-2">
-            Recherche produit
-          </p>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Nom du produit..."
-            className="w-full rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm font-body text-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-400"
-          />
-        </div>
+        <SearchSection />
 
         <div>
           <p className="text-xs uppercase tracking-wide text-stone-400 font-body mb-2">
@@ -49,7 +37,9 @@ export function FilterSection() {
           </p>
           <div className="rounded-xl border border-stone-200 bg-stone-50 p-3">
             <div className="mb-3">
-              <label className="text-xs text-stone-500 font-body">Par page</label>
+              <label className="text-xs text-stone-500 font-body">
+                Par page
+              </label>
               <select
                 value={limit}
                 onChange={(e) => handleLimitChange(Number(e.target.value))}
@@ -105,7 +95,9 @@ export function FilterSection() {
               {catLoading === LoadingState.pending && (
                 <p className="text-xs text-stone-500 mt-2">Chargement...</p>
               )}
-              {catError && <p className="text-xs text-red-500 mt-2">{catError}</p>}
+              {catError && (
+                <p className="text-xs text-red-500 mt-2">{catError}</p>
+              )}
             </div>
             <label className="flex items-center gap-2 text-sm font-body text-stone-600">
               <input type="checkbox" className="rounded border-stone-300" />
