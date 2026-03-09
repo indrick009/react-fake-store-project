@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrorExceptionType } from "@/shared/exceptions/ErrorExceptionType";
-import { AlertType } from "@/shared/lib/Notify";
+import { ErrorExceptionType } from "../shared/exceptions/ErrorExceptionType";
+import { AlertType } from "../shared/lib/Notify";
 
 export interface ErrorState {
   message: string;
