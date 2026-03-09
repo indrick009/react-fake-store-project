@@ -24,9 +24,7 @@ export function FilterSection() {
 
   return (
     <aside className="hidden md:block md:sticky md:top-[88px] md:self-start bg-white/90 backdrop-blur-sm rounded-2xl border border-stone-200 p-5 shadow-sm">
-      <h3 className="font-display text-lg font-bold text-stone-900 mb-5">
-        Explorer
-      </h3>
+      <div className="text-lg font-bold text-stone-900 mb-5">Explorer</div>
 
       <div className="space-y-5">
         <SearchSection />
@@ -40,21 +38,36 @@ export function FilterSection() {
               <label className="text-xs text-stone-500 font-body">
                 Par page
               </label>
-              <select
-                value={limit}
-                onChange={(e) => handleLimitChange(Number(e.target.value))}
-                className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-body text-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-400"
-              >
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={30}>30</option>
-              </select>
+              <div className="relative mt-1">
+                <select
+                  value={limit}
+                  onChange={(e) => handleLimitChange(Number(e.target.value))}
+                  className="w-full appearance-none rounded-full border border-stone-200 bg-white px-4 py-2 pr-10 text-sm font-body text-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                >
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={30}>30</option>
+                </select>
+                <svg
+                  className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
             </div>
             <div className="flex items-center justify-between gap-2">
               <button
                 onClick={() => handlePageChange(Math.max(1, page - 1))}
                 disabled={page <= 1}
-                className="px-3 py-1.5 rounded-lg border border-stone-200 bg-white text-xs font-body text-stone-600 hover:bg-stone-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-1.5 rounded-full border border-stone-200 bg-white text-xs font-body text-stone-600 hover:bg-stone-100 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Precedent
               </button>
@@ -63,7 +76,7 @@ export function FilterSection() {
               </span>
               <button
                 onClick={() => handlePageChange(page + 1)}
-                className="px-3 py-1.5 rounded-lg border border-stone-200 bg-white text-xs font-body text-stone-600 hover:bg-stone-100"
+                className="px-3 py-1.5 rounded-full border border-stone-200 bg-white text-xs font-body text-stone-600 hover:bg-stone-100"
               >
                 Suivant
               </button>
@@ -80,18 +93,33 @@ export function FilterSection() {
               <p className="text-xs uppercase tracking-wide text-stone-400 font-body mb-2">
                 Categorie
               </p>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setCategories(e.target.value)}
-                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-body text-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-400"
-              >
-                <option value="">Toutes les categories</option>
-                {safeCategories.map((cat) => (
-                  <option key={cat.slug} value={cat.slug}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setCategories(e.target.value)}
+                  className="w-full appearance-none rounded-full border border-stone-200 bg-white px-4 py-2 pr-10 text-sm font-body text-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                >
+                  <option value="">Toutes les categories</option>
+                  {safeCategories.map((cat) => (
+                    <option key={cat.slug} value={cat.slug}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+                <svg
+                  className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
               {catLoading === LoadingState.pending && (
                 <p className="text-xs text-stone-500 mt-2">Chargement...</p>
               )}

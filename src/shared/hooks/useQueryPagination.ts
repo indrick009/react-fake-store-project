@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface OwnProps {
@@ -47,11 +47,6 @@ export const useQueryPagination = (
       limit: l.toString(),
     });
   };
-
-  useEffect(() => {
-    if (!!initialPage) setPage(initialPage);
-    if (!!initialLimit) setLimit(initialLimit);
-  }, [initialLimit, initialPage]);
 
   const updateQueryParams = (params: Record<string, string>) => {
     const oldQuery = Object.fromEntries(searchParams.entries());

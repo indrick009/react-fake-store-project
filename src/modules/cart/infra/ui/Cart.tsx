@@ -1,4 +1,5 @@
 import { Cart as CartModel } from "../../models/Cart";
+import AppButton from "../../../../shared/components/AppButton";
 
 export default function Cart({
   cart,
@@ -24,9 +25,7 @@ export default function Cart({
 
       <aside className="fixed right-0 top-0 h-screen w-full max-w-sm bg-white z-50 shadow-2xl flex flex-col border-l border-stone-200">
         <div className="flex items-center justify-between px-6 py-5 border-b border-stone-100">
-          <h2 className="font-display text-xl font-bold text-stone-900">
-            Mon Panier
-          </h2>
+          <h2 className="text-xl font-bold text-stone-900">Mon Panier</h2>
           <button
             onClick={onCartClick}
             className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center hover:bg-stone-200 transition-colors cursor-pointer"
@@ -80,7 +79,7 @@ export default function Cart({
                   <p className="font-body text-xs text-stone-700 line-clamp-2 font-medium">
                     {item.title}
                   </p>
-                  <p className="font-display text-sm font-bold text-stone-900 mt-1">
+                  <p className="text-sm font-bold text-stone-900 mt-1">
                     ${item.price.toFixed(2)}
                   </p>
 
@@ -106,21 +105,13 @@ export default function Cart({
                     </button>
                     <button
                       onClick={() => onRemoveItem(item.id)}
-                      className="ml-auto text-red-400 hover:text-red-600 cursor-pointer"
+                      className="ml-auto"
                     >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
+                      <img
+                        src="./img/delete.svg"
+                        alt="Supprimer le panier"
+                        className="h-[25px] w-[25px]"
+                      />
                     </button>
                   </div>
                 </div>
@@ -133,17 +124,14 @@ export default function Cart({
           <div className="px-6 py-5 border-t border-stone-100 space-y-3">
             <div className="flex justify-between items-center">
               <span className="font-body text-stone-500">Total</span>
-              <span className="font-display text-2xl font-bold text-stone-900">
+              <span className="text-2xl font-bold text-stone-900">
                 ${cart?.total.toFixed(2)}
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <button
-                onClick={onCheckout}
-                className="w-full bg-stone-900 text-white font-body font-semibold py-3 rounded-xl hover:bg-stone-700 transition-colors cursor-pointer"
-              >
+              <AppButton onClick={onCheckout} fullWidth>
                 Poursuivre la commande
-              </button>
+              </AppButton>
               <div className="">
                 <button onClick={onClearCart}>
                   <img

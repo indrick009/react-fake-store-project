@@ -14,6 +14,8 @@ export const PayOrderAsync = createAppAsyncThunk<
     return apiMiddleware({
       apiCall: orderGateway.payOrder(command),
       rejectWithValue,
+      error: (response) => response.paymentStatus === "failed",
+      errorResponse: (response) => ({ message: response.message }),
     });
   },
 );

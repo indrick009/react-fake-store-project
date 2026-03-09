@@ -19,7 +19,7 @@ export default function UserAvatar() {
         alt={currentUser.username}
         className="w-9 h-9 rounded-full object-cover border-2 border-stone-200"
       />
-      <span className="text-sm font-medium text-stone-800">
+      <span className="text-sm font-medium text-stone-800 hidden md:block">
         {currentUser.firstName} {currentUser.lastName}
       </span>
     </div>

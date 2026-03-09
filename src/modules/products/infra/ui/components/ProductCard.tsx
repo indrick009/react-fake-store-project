@@ -26,26 +26,23 @@ export default function ProductCard({
         className,
       )}
     >
-      {/* Image */}
       <div className="relative bg-stone-50 p-6 flex items-center justify-center h-32 md:h-52 overflow-hidden">
         <img
           src={product.image}
           alt={product.title}
           className="h-30 md:h-40 w-auto object-contain group-hover:scale-110 transition-transform duration-500"
         />
-        {/* Badge catégorie */}
-        <span className="absolute top-3 left-3 text-xs font-body font-medium bg-stone-100 text-stone-700 px-2 py-1 rounded-full capitalize">
+
+        <span className="absolute top-3 left-3 text-xs font-body font-medium bg-black/50 text-white px-2 py-1 rounded-full capitalize">
           {product.category}
         </span>
       </div>
 
-      {/* Contenu */}
       <div className="flex flex-col flex-1 p-5 gap-3">
         <h3 className="font-body font-medium text-stone-800 text-sm leading-snug line-clamp-2">
           {product.title}
         </h3>
 
-        {/* Étoiles & avis */}
         <div className="flex items-center gap-2">
           <div className="flex gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -64,18 +61,33 @@ export default function ProductCard({
           </span>
         </div>
 
-        {/* Prix & bouton */}
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-stone-100">
-          <span className="font-display text-[12px] md:text-xl font-bold text-stone-900">
+          <span className="text-[12px] md:text-xl font-bold text-stone-900">
             ${product.price.toFixed(2)}
           </span>
+
           <button
             onClick={(e) => {
               e.stopPropagation();
               onAddToCart(product);
             }}
             disabled={loadingAddToCart}
-            className="bg-stone-900 text-white text-[10px]  md:text-xs font-body font-medium px-4 py-2 rounded-xl hover:bg-stone-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="md:hidden"
+          >
+            {loadingAddToCart ? (
+              <div></div>
+            ) : (
+              <img src="./img/addcart.svg" className="h-[25px]" />
+            )}
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart(product);
+            }}
+            disabled={loadingAddToCart}
+            className="hidden md:block bg-primary-500 text-white text-[10px]  md:text-xs font-body font-medium px-4 py-2 rounded-xl hover:bg-primary-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loadingAddToCart ? (
               <span className="flex items-center gap-1">

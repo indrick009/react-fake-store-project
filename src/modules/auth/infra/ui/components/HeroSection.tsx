@@ -12,13 +12,13 @@ const HeroSection = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/70 to-white-600/80" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-600/70 to-white-600/80" />
 
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="text-white text-4xl font-bold mb-12 relative z-10"
+        className="text-white text-3xl md:text-4xl font-bold mb-12 relative pt-[50px]"
       >
         Your Digital Experience
       </motion.h1>

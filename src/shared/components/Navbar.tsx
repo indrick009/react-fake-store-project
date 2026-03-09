@@ -8,6 +8,7 @@ import Profile from "../../modules/profile/infra/ui/Profile";
 import { useProfile } from "../../modules/profile/infra/ui/hooks/useProfile";
 import Order from "../../modules/order/infra/ui/Order";
 import { useOrder } from "../../modules/order/infra/ui/hooks/useOrder";
+import AppButton from "./AppButton";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -34,10 +35,12 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <span className="font-display text-xl font-bold text-stone-900">
-            CleanShop
-          </span>
+        <div className="flex items-center">
+          <img src="./img/store.svg" alt="" className="w-[30px] h-[30px]"/>
+          <div>
+            <span className="text-xl font-bold text-primary-500">Clean</span>
+            <span className="text-xl font-bold text-stone-900">Shop</span>
+          </div>
         </div>
         <div className="flex space-x-4">
           {/* Bouton panier */}
@@ -50,7 +53,7 @@ export default function Navbar() {
                 <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z" />
               </svg>
               {totalQuantity > 0 && (
-                <span className="absolute -top-2 -right-2 bg-amber-400 text-stone-900 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-primary-400 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                   {totalQuantity}
                 </span>
               )}
@@ -63,12 +66,13 @@ export default function Navbar() {
             </button>
           )}
           {!isAuthenticated && (
-            <button
+            <AppButton
               onClick={() => navigate(ProductRoutes.login)}
-              className="relative flex items-center gap-2 bg-stone-900 text-white px-4 py-2 rounded-xl hover:bg-stone-700 transition-colors duration-200 font-body font-medium text-sm cursor-pointer"
+              variant="dark"
+              className="px-4 py-2"
             >
               Login
-            </button>
+            </AppButton>
           )}
         </div>
       </div>

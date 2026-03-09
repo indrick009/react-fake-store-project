@@ -11,7 +11,9 @@ import type { OrderPricing } from "../../models/pricing/OrderPricing";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const toOrderItem = (cartProduct: CreateOrderCommand["cart"]["products"][number]): OrderItem => {
+const toOrderItem = (
+  cartProduct: CreateOrderCommand["cart"]["products"][number],
+): OrderItem => {
   return {
     productId: cartProduct.id,
     title: cartProduct.title,
@@ -52,7 +54,7 @@ export class OrderLocalGateway implements OrderGateway {
     };
 
     this.orders.set(order.id, order);
-    await wait(200);
+    await wait(1000);
     return { order };
   }
 
@@ -72,12 +74,14 @@ export class OrderLocalGateway implements OrderGateway {
     };
 
     this.orders.set(existing.id, nextOrder);
-    await wait(500);
+    await wait(1000);
+    const isSuccess = nextOrder.payment.status === "success";
     return {
       order: nextOrder,
-      paymentStatus: "success",
-      message: "Merci d'avoir choisi CleanStore",
+      paymentStatus: nextOrder.payment.status,
+      message: isSuccess
+        ? "Merci d'avoir choisi CleanStore"
+        : "Erreur lors du paiement",
     };
   }
 }
-

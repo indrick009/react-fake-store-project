@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { REHYDRATE } from "redux-persist";
 import { LoadingState } from "../../../shared/domain/enums/LoadingState";
 import type { Order } from "../models/Order";
 import type { PaymentStatus } from "../models/payment/PaymentMethod";
@@ -55,6 +56,9 @@ export const OrderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(REHYDRATE as any, (state) => {
+        state.isOpen = false;
+      })
       .addCase(CreateOrderAsync.pending, (state) => {
         state.loading = LoadingState.pending;
         state.error = null;
@@ -75,6 +79,12 @@ export const OrderSlice = createSlice({
       .addCase(PayOrderAsync.pending, (state) => {
         state.loading = LoadingState.pending;
         state.error = null;
+        if (!state.currentOrder) {
+          state.loading = LoadingState.failed;
+          state.paymentStatus = "idle";
+          state.error = "Commande introuvable";
+          return;
+        }
         const current = resolvePaymentState(state.paymentStatus);
         state.paymentStatus = current.next("SUBMIT_PHONE").status;
       })
@@ -82,17 +92,29 @@ export const OrderSlice = createSlice({
         state.loading = LoadingState.success;
         state.currentOrder = action.payload.order;
         const current = resolvePaymentState(state.paymentStatus);
-        state.paymentStatus = current.next("PAYMENT_SUCCESS").status;
+        state.paymentStatus =
+          action.payload.paymentStatus === "success"
+            ? current.next("PAYMENT_SUCCESS").status
+            : current.next("PAYMENT_FAILED").status;
         state.successMessage = action.payload.message;
       })
       .addCase(PayOrderAsync.rejected, (state, action) => {
         state.loading = LoadingState.failed;
         const current = resolvePaymentState(state.paymentStatus);
         state.paymentStatus = current.next("PAYMENT_FAILED").status;
-        state.error =
+        state.successMessage = null;
+        const message =
           ((action.payload as { message?: string } | undefined)?.message ??
             action.error.message ??
             "Erreur inconnue");
+        state.error = message;
+
+        const normalizedMessage = message.toLowerCase().trim();
+        if (normalizedMessage.includes("commande introuvable")) {
+          state.currentOrder = null;
+          state.paymentStatus = "idle";
+          state.successMessage = null;
+        }
       });
   },
 });

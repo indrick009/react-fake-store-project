@@ -1,4 +1,5 @@
 import { LoadingState } from "../../../../shared/domain/enums/LoadingState";
+import AppButton from "../../../../shared/components/AppButton";
 import { useProfile } from "./hooks/useProfile";
 
 export default function Profile({
@@ -20,7 +21,7 @@ export default function Profile({
 
       <aside className="fixed right-0 top-0 h-screen w-full max-w-sm bg-white z-50 shadow-2xl flex flex-col border-l border-stone-200">
         <div className="flex items-center justify-between px-6 py-5 border-b border-stone-100">
-          <h2 className="font-display text-xl font-bold text-stone-900">
+          <h2 className="text-xl font-bold text-stone-900">
             Mon Profil
           </h2>
           <button
@@ -94,7 +95,7 @@ export default function Profile({
                   className="w-14 h-14 rounded-full object-cover bg-white border border-stone-200 flex-shrink-0"
                 />
                 <div className="min-w-0">
-                  <p className="font-display text-base font-bold text-stone-900 truncate">
+                  <p className="text-base font-bold text-stone-900 truncate">
                     {fullName || currentUser.username}
                   </p>
                   <p className="font-body text-sm text-stone-500 truncate">
@@ -120,7 +121,7 @@ export default function Profile({
                   <p className="font-body text-xs uppercase tracking-wide text-stone-400 mb-1">
                     Phone Number
                   </p>
-                  <p className="font-display text-lg font-bold text-stone-900">
+                  <p className="text-lg font-bold text-stone-900">
                     {currentUser.phone}
                   </p>
                 </div>
@@ -140,9 +141,9 @@ export default function Profile({
               </span>
             </div>
           )}
-          <button onClick={logout} className="w-full bg-stone-900 text-white font-body font-semibold py-3 rounded-xl hover:bg-stone-700 transition-colors cursor-pointer">
+          <AppButton onClick={logout} fullWidth>
             Logout
-          </button>
+          </AppButton>
         </div>
       </aside>
     </>

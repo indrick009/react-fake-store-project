@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { FormEvent, useState } from "react";
-import { LoadingState } from "../../../../../shared/domain/enums/LoadingState";
 import { useAuth } from "../hooks/useAuth";
+import { LoadingState } from "../../../../../shared/domain/enums/LoadingState";
+import AppButton from "../../../../../shared/components/AppButton";
 
 const LoginForm = () => {
   const { login, loading, error } = useAuth();
@@ -29,7 +30,7 @@ const LoginForm = () => {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
 
         <input
@@ -37,16 +38,17 @@ const LoginForm = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
 
-        <button
+        <AppButton
           type="submit"
-          disabled={isSubmitting}
-          className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-70 disabled:cursor-not-allowed"
+          fullWidth
+          loading={isSubmitting}
+          className="rounded-full"
         >
-          {isSubmitting ? "Loading..." : "Login"}
-        </button>
+          Login
+        </AppButton>
 
         {error && <p className="text-sm text-red-500">{error}</p>}
       </form>

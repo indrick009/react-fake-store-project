@@ -30,7 +30,7 @@ const ImageStack = () => {
   }, [progress]);
 
   return (
-    <div ref={ref} className="relative h-[350px] w-[250px]">
+    <div ref={ref} className="relative h-[350px] w-[250px] hidden md:block">
       {images.map((img, i) => (
         <ImageCard key={i} src={img} index={i} isActive={i === active} />
       ))}

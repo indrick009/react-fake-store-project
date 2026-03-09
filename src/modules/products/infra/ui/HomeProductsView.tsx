@@ -17,16 +17,20 @@ export default function HomeProductsView() {
     <div className="min-h-screen bg-stone-50 font-body">
       <Navbar />
 
-      <section className="h-[320px] relative bg-[url('https://media.istockphoto.com/id/2155795543/photo/a-back-view-of-a-woman-holding-shopping-bags-in-front-of-a-store-window.jpg?s=2048x2048&w=is&k=20&c=WIkI5826AKsZ0Q7Ggc-KB5AiWzAGLcjdyEoNIgOZkyM=')] bg-cover bg-center text-white py-16 px-4 text-center">
-        <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute bg-stone-900/50" />
+      <section className="h-[320px] md:h-[520px] relative bg-[url('https://media.istockphoto.com/id/2155795543/photo/a-back-view-of-a-woman-holding-shopping-bags-in-front-of-a-store-window.jpg?s=2048x2048&w=is&k=20&c=WIkI5826AKsZ0Q7Ggc-KB5AiWzAGLcjdyEoNIgOZkyM=')] bg-cover bg-center text-white py-16 px-4 text-center">
+        <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute bg-stone-900/70" />
         <div className="w-full h-full top-0 left-0 right-0 bottom-0 absolute flex flex-col items-center justify-evenly px-6">
           <div>
-            <p className="text-amber-300 font-body font-medium text-sm tracking-widest uppercase mb-3">
+            <p className="text-primary-300 font-body font-medium text-sm tracking-widest uppercase mb-3">
               Bienvenue sur
             </p>
-            <h1 className="font-display text-4xl sm:text-5xl font-bold mb-6">
-              Cleanshop Boutique
-            </h1>
+            <div className="flex text-3xl sm:text-4xl font-bold mb-6 gap-3">
+              <div>
+                <span className="text-primary-500">Clean</span>
+                <span className="text-white">Shop</span>
+              </div>
+              Boutique
+            </div>
           </div>
 
           <div className="w-full max-w-md md:hidden">
