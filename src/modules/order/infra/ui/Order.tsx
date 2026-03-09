@@ -7,7 +7,7 @@ import OrderStep2 from "./components/OrderStep2";
 import OrderStep3 from "./components/OrderStep3";
 import Stepper from "./components/Stepper";
 import { useOrder } from "./hooks/useOrder";
-import AppButton from "../../../../shared/components/AppButton";
+import PrimaryButton from "../../../../shared/components/PrimaryButton";
 
 export default function Order({
   cart,
@@ -162,7 +162,7 @@ export default function Order({
 
         <div className="px-7 py-5 border-t border-stone-100">
           {!currentOrder && (
-            <AppButton
+            <PrimaryButton
               onClick={handleCreateOrder}
               disabled={!hasCartProducts || isCreating}
               fullWidth
@@ -170,11 +170,11 @@ export default function Order({
               loading={isCreating}
             >
               Continuer vers paiement
-            </AppButton>
+            </PrimaryButton>
           )}
 
           {!!currentOrder && paymentStatus !== "success" && (
-            <AppButton
+            <PrimaryButton
               onClick={handleSubmitPayment}
               disabled={!phoneNumber.trim() || isPaying}
               fullWidth
@@ -183,13 +183,13 @@ export default function Order({
               loading={isPaying}
             >
               Valider le paiement
-            </AppButton>
+            </PrimaryButton>
           )}
 
           {paymentStatus === "success" && (
-            <AppButton onClick={handleCloseSuccess} fullWidth size="lg">
+            <PrimaryButton onClick={handleCloseSuccess} fullWidth size="lg">
               Fermer
-            </AppButton>
+            </PrimaryButton>
           )}
         </div>
       </aside>

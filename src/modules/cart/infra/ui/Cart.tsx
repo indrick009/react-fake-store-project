@@ -1,5 +1,5 @@
 import { Cart as CartModel } from "../../models/Cart";
-import AppButton from "../../../../shared/components/AppButton";
+import PrimaryButton from "../../../../shared/components/PrimaryButton";
 
 export default function Cart({
   cart,
@@ -129,9 +129,9 @@ export default function Cart({
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <AppButton onClick={onCheckout} fullWidth>
+              <PrimaryButton onClick={onCheckout} fullWidth>
                 Poursuivre la commande
-              </AppButton>
+              </PrimaryButton>
               <div className="">
                 <button onClick={onClearCart}>
                   <img

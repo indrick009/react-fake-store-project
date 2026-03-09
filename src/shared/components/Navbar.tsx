@@ -8,7 +8,7 @@ import Profile from "../../modules/profile/infra/ui/Profile";
 import { useProfile } from "../../modules/profile/infra/ui/hooks/useProfile";
 import Order from "../../modules/order/infra/ui/Order";
 import { useOrder } from "../../modules/order/infra/ui/hooks/useOrder";
-import AppButton from "./AppButton";
+import PrimaryButton from "./PrimaryButton";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -66,13 +66,13 @@ export default function Navbar() {
             </button>
           )}
           {!isAuthenticated && (
-            <AppButton
+            <PrimaryButton
               onClick={() => navigate(ProductRoutes.login)}
               variant="dark"
               className="px-4 py-2"
             >
               Login
-            </AppButton>
+            </PrimaryButton>
           )}
         </div>
       </div>
