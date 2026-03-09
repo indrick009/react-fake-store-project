@@ -58,6 +58,7 @@ export const OrderSlice = createSlice({
     builder
       .addCase(REHYDRATE as any, (state) => {
         state.isOpen = false;
+        state.error =""
       })
       .addCase(CreateOrderAsync.pending, (state) => {
         state.loading = LoadingState.pending;

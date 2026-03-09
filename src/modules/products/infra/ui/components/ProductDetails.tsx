@@ -147,7 +147,7 @@ export default function ProductDetailPage() {
                   navigate(ProductRoutes.login);
                 }
               }}
-              className="flex items-center gap-2 bg-primary-500 text-white font-body font-medium px-6 py-3 rounded-xl hover:bg-primary-700 transition-colors duration-200 cursor-pointer text-sm"
+              className="flex items-center gap-2 bg-primary-500 text-white font-body font-medium px-6 py-3 rounded-full hover:bg-primary-700 transition-colors duration-200 cursor-pointer text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z" />
