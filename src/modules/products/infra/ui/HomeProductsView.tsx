@@ -9,7 +9,8 @@ import CategoriesSection from "./components/CategoriesSection";
 import { SearchSection } from "./components/SearchSection";
 
 export default function HomeProductsView() {
-  const { allProducts, loadingProducts, error } = useProducts();
+  const { allProducts, loadingProducts, error, searchTerm, handleSearch } =
+    useProducts();
   const { addTocart } = useCart();
   const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ export default function HomeProductsView() {
           </div>
 
           <div className="w-full max-w-md md:hidden">
-            <SearchSection />
+            <SearchSection searchTerm={searchTerm} handleSearch={handleSearch} />
           </div>
         </div>
       </section>
