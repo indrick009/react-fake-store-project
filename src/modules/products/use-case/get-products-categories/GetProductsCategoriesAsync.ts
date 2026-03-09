@@ -5,8 +5,7 @@ import {
 import { GetProductCategoriesResponse } from "./GetProductsCategoriesResponse";
 
 export const GetProductCategoriesAsync = createAppAsyncThunk<
-  GetProductCategoriesResponse,
-  null
+  GetProductCategoriesResponse
 >(
   "product/single",
   async (_, { extra: { productsGateway }, rejectWithValue }) => {
