@@ -11,11 +11,10 @@ export const useProducts = () => {
   const allProducts = useAppSelector(ProductSelector.SelectAllProducts);
   const loadingProducts = useAppSelector(ProductSelector.getLoadingState);
   const error = useAppSelector(ProductSelector.error);
-  const [searchTerm, setSearchTerm] = useState(() => {
-    return localStorage.getItem("productSearchTerm") || "";
-  });
-  const selectedProduct = useAppSelector(ProductSelector.selectedProduct);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const selectedProduct = useAppSelector(ProductSelector.selectedProduct);
   const loadingProductDetails = useAppSelector(
     ProductSelector.getProductDetailsLoadingState,
   );
@@ -38,11 +37,12 @@ export const useProducts = () => {
   }, [debounceSearch]);
 
   const handleSearch = (value: string) => {
+    queryPagination.setCategories("")
     setSearchTerm(value);
-    localStorage.setItem("productSearchTerm", value);
   };
 
   const setCategories = (value: string) => {
+    setSearchTerm("")
     queryPagination.setCategories(value);
   };
 
@@ -65,7 +65,10 @@ export const useProducts = () => {
     page: queryPagination.page,
     limit: queryPagination.limit,
     handlePageChange: (nextPage: number) =>
-      queryPagination.handleQueryPaginationData(nextPage, queryPagination.limit),
+      queryPagination.handleQueryPaginationData(
+        nextPage,
+        queryPagination.limit,
+      ),
     handleLimitChange: (nextLimit: number) =>
       queryPagination.handleQueryPaginationData(1, nextLimit),
     searchTerm,

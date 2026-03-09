@@ -68,7 +68,8 @@ export const useQueryPagination = (
     updateQueryParams({
       category: value,
       page: "1",
-      // total:"100"
+      limit:"10",
+      searchParams:""
     });
   };
 
