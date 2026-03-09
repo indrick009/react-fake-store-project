@@ -108,7 +108,7 @@ export default function Cart({
                       className="ml-auto"
                     >
                       <img
-                        src="./img/delete.svg"
+                        src="/img/delete.svg"
                         alt="Supprimer le panier"
                         className="h-[25px] w-[25px]"
                       />
@@ -135,7 +135,7 @@ export default function Cart({
               <div className="">
                 <button onClick={onClearCart}>
                   <img
-                    src="./img/delete.svg"
+                    src="/img/delete.svg"
                     alt="Supprimer le panier"
                     className="h-[40px] w-[30px]"
                   />

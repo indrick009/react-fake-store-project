@@ -83,7 +83,7 @@ export default function ProductCard({
             {loadingAddToCart ? (
               <div></div>
             ) : (
-              <img src="./img/addcart.svg" className="h-[25px]" />
+              <img src="/img/addcart.svg" className="h-[25px]" />
             )}
           </button>
 
