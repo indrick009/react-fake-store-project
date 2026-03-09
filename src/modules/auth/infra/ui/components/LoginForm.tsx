@@ -35,7 +35,7 @@ const LoginForm = () => {
       transition={{ duration: 0.8 }}
       className="bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md"
     >
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+      <div className="text-3xl font-bold mb-6 text-gray-800">Welcome Back</div>
 
       <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
         <input

@@ -42,10 +42,6 @@ class Notify {
         ...options.customOptions,
         toastId: options.toastId, // injecté manuellement
         className: 'custom-toast',
-        bodyStyle: {
-          borderRadius: '50px',
-          background: 'rgba(0,0,0,0)',
-        },
       }
     );
   }

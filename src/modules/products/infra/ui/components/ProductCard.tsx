@@ -1,5 +1,8 @@
 import { twMerge } from "tailwind-merge";
 import { Product } from "../../../models/products/productEntity";
+import { useAuth } from "../../../../auth/infra/ui/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { ProductRoutes } from "../../../../../routes/routes";
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +20,9 @@ export default function ProductCard({
   className,
 }: ProductCardProps) {
   const stars = Math.round(product.rating.rate);
+  const { isAuthenticated } = useAuth();
+
+   const navigate = useNavigate();
 
   return (
     <div
@@ -77,17 +83,21 @@ export default function ProductCard({
             {loadingAddToCart ? (
               <div></div>
             ) : (
-              <img src="./img/addcart.svg" className="h-[25px]" />
+              <img src="/img/addcart.svg" className="h-[25px]" />
             )}
           </button>
 
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onAddToCart(product);
+              if (isAuthenticated) {
+                onAddToCart(product);
+              } else {
+                navigate(ProductRoutes.login);
+              }
             }}
             disabled={loadingAddToCart}
-            className="hidden md:block bg-primary-500 text-white text-[10px]  md:text-xs font-body font-medium px-4 py-2 rounded-xl hover:bg-primary-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="hidden md:block bg-primary-500 text-white text-[10px]  md:text-xs font-body font-medium px-4 py-2 rounded-full hover:bg-primary-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loadingAddToCart ? (
               <span className="flex items-center gap-1">

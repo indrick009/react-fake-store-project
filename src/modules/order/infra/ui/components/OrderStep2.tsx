@@ -55,7 +55,7 @@ export default function OrderStep2({
             onChange={() => setProvider("mtn_momo")}
           />
           <div className="flex items-center gap-2">
-            <img src="./img/mtn.png" alt="" className="h-[25px] w-[25px]"/>
+            <img src="/img/mtn.png" alt="" className="h-[25px] w-[25px]"/>
             <span className="text-sm font-medium text-stone-700">
               MTN MoMo
             </span>
@@ -70,7 +70,7 @@ export default function OrderStep2({
             onChange={() => setProvider("orange_money")}
           />
           <div className="flex items-center">
-            <img src="./img/orange.png" alt="" className="h-[25px] w-[40px]"/>
+            <img src="/img/orange.png" alt="" className="h-[25px] w-[40px]"/>
             <span className="text-sm font-medium text-stone-700">
               Orange Money
             </span>
