@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 type Variant = "primary" | "dark" | "amber";
 type Size = "md" | "lg";
 
-interface AppButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface PrimaryButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: Variant;
   size?: Size;
@@ -23,7 +23,7 @@ const sizeClasses: Record<Size, string> = {
   lg: "py-3.5 rounded-xl text-base font-semibold",
 };
 
-export default function AppButton({
+export default function PrimaryButton({
   children,
   variant = "primary",
   size = "md",
@@ -32,7 +32,7 @@ export default function AppButton({
   disabled,
   className,
   ...props
-}: AppButtonProps) {
+}: PrimaryButtonProps) {
   return (
     <button
       disabled={disabled || loading}

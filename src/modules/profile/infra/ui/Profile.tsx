@@ -1,5 +1,5 @@
 import { LoadingState } from "../../../../shared/domain/enums/LoadingState";
-import AppButton from "../../../../shared/components/AppButton";
+import PrimaryButton from "../../../../shared/components/PrimaryButton";
 import { useProfile } from "./hooks/useProfile";
 
 export default function Profile({
@@ -141,9 +141,9 @@ export default function Profile({
               </span>
             </div>
           )}
-          <AppButton onClick={logout} fullWidth>
+          <PrimaryButton onClick={logout} fullWidth>
             Logout
-          </AppButton>
+          </PrimaryButton>
         </div>
       </aside>
     </>
