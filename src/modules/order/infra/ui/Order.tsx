@@ -7,6 +7,7 @@ import OrderStep2 from "./components/OrderStep2";
 import OrderStep3 from "./components/OrderStep3";
 import Stepper from "./components/Stepper";
 import { useOrder } from "./hooks/useOrder";
+import type { PaymentStatus } from "../../models/payment/PaymentMethod";
 import PrimaryButton from "../../../../shared/components/PrimaryButton";
 
 export default function Order({
@@ -22,7 +23,6 @@ export default function Order({
     currentOrder,
     loading,
     error,
-    paymentStatus,
     successMessage,
     createOrder,
     submitPayment,
@@ -63,6 +63,8 @@ export default function Order({
     onOrderClick();
   };
 
+  const paymentStatus: PaymentStatus =
+    currentOrder?.payment.status ?? "idle";
   const step = !currentOrder ? 1 : paymentStatus === "success" ? 3 : 2;
   const giftOptions = [
     {

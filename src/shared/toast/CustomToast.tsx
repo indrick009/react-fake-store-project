@@ -8,22 +8,33 @@ type OwnProps = {
 };
 
 const CustomToast = ({ className, type, message }: OwnProps) => {
+  const wrapperClasses = twMerge(
+    "flex items-center gap-3 px-4 py-3 text-sm font-semibold",
+    type === AlertType.SUCCESS && "text-emerald-500/95",
+    type === AlertType.ERROR && "text-red-500/95",
+    type === AlertType.WARNING && "text-amber-500/95",
+    type === AlertType.DEFAULT && "text-blue-500/95",
+    className
+  );
+
+  const badgeClasses = twMerge(
+    "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white",
+    type === AlertType.SUCCESS && "bg-emerald-500/95",
+    type === AlertType.ERROR && "bg-red-500/95",
+    type === AlertType.WARNING && "bg-amber-500/95",
+    type === AlertType.DEFAULT && "bg-blue-500/95"
+  );
+
   return (
-    <div
-      className={twMerge(
-        `py-2 px-4 rounded-xl text-white font-medium
-        transition-all duration-300 ease-linear overflow-hidden relative w-[450px] text-sm min-h-[65px]`,
-        type === AlertType.SUCCESS && "bg-green border border-green",
-        type === AlertType.ERROR && "bg-red border border-red",
-        type === AlertType.WARNING && "bg-yellow-400 border border-yellow-400",
-        type === AlertType.DEFAULT && "bg-blue-400 border border-blue-400",
-        className
-      )}
-    >
-      {message}
-      {/*<div className="h-2 w-full bg-transparent absolute left-0 right-0 bottom-0">*/}
-      {/*  <div className="bg-white w-0 progress-bar-anim h-full"></div>*/}
-      {/*</div>*/}
+    <div className={wrapperClasses}>
+      <span className={badgeClasses}>
+        {type === AlertType.SUCCESS && "✓"}
+        {type === AlertType.ERROR && "!"}
+        {type === AlertType.WARNING && "!"}
+        {type === AlertType.DEFAULT && "i"}
+      </span>
+
+      <span className="leading-tight">{message}</span>
     </div>
   );
 };

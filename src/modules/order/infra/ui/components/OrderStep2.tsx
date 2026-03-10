@@ -1,6 +1,7 @@
 import type { PaymentProvider } from "../../../models/payment/PaymentMethod";
 import type { PaymentStatus } from "../../../models/payment/PaymentMethod";
 import type { Order } from "../../../models/Order";
+import AppInput from "../../../../../shared/components/AppInput";
 
 interface OrderStep2Props {
   currentOrder: Order | null;
@@ -47,7 +48,7 @@ export default function OrderStep2({
         <p className="text-[10px] tracking-[0.2em] uppercase text-amber-500 font-semibold">
           Methode de paiement
         </p>
-        <label className="flex items-center gap-3 p-3 rounded-xl border border-stone-200 cursor-pointer">
+        <label className="flex items-center gap-3 p-3 rounded-full border border-stone-200 cursor-pointer">
           <input
             type="radio"
             name="payment-provider"
@@ -62,7 +63,7 @@ export default function OrderStep2({
           </div>
         </label>
 
-        <label className="flex items-center gap-3 p-3 rounded-xl border border-stone-200 cursor-pointer">
+        <label className="flex items-center gap-3 p-3 rounded-full border border-stone-200 cursor-pointer">
           <input
             type="radio"
             name="payment-provider"
@@ -77,12 +78,12 @@ export default function OrderStep2({
           </div>
         </label>
 
-        <input
+        <AppInput
           type="tel"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           placeholder="Numero de telephone"
-          className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm text-stone-700 placeholder-stone-300 focus:outline-none focus:border-stone-400 focus:ring-2 focus:ring-stone-100 transition-all"
+          numericOnly
         />
       </div>
     </div>

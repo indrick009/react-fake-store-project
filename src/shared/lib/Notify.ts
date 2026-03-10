@@ -11,14 +11,14 @@ export enum AlertType {
 
 const defaultOptions: ToastOptions = {
   position: "top-center",
-  autoClose: 5000,
+  autoClose: 2000,
   hideProgressBar: false,
   closeOnClick: false,
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
   transition: Bounce,
-  theme: "colored",
+  // theme: "dark",
 };
 
 export type NotifyOptions = {
@@ -40,8 +40,8 @@ class Notify {
       {
         ...defaultOptions,
         ...options.customOptions,
-        toastId: options.toastId, // injecté manuellement
-        className: 'custom-toast',
+        toastId: options.toastId,
+        className: '',
       }
     );
   }

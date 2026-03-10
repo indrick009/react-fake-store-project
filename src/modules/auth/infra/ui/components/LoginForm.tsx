@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useLoginForm } from "../hooks/useLoginForm";
 import PrimaryButton from "../../../../../shared/components/PrimaryButton";
+import AppInput from "../../../../../shared/components/AppInput";
 
 const LoginForm = () => {
   const { register, errors, submit, isSubmitting, error } = useLoginForm();
@@ -15,7 +16,7 @@ const LoginForm = () => {
       <div className="text-3xl font-bold mb-6 text-gray-800">Welcome Back</div>
 
       <form className="space-y-5" onSubmit={submit}>
-        <input
+        <AppInput
           type="text"
           placeholder="Username"
           {...register("username", {
@@ -25,7 +26,6 @@ const LoginForm = () => {
               message: "Username doit contenir au moins 3 caracteres",
             },
           })}
-          className="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
         {errors.username && (
           <p className="text-sm text-red-500 -mt-3">
@@ -33,7 +33,7 @@ const LoginForm = () => {
           </p>
         )}
 
-        <input
+        <AppInput
           type="password"
           placeholder="Password"
           {...register("password", {
@@ -43,7 +43,6 @@ const LoginForm = () => {
               message: "Password doit contenir au moins 4 caracteres",
             },
           })}
-          className="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
         {errors.password && (
           <p className="text-sm text-red-500 -mt-3">

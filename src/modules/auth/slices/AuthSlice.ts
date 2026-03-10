@@ -25,11 +25,6 @@ export const LoginSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(REHYDRATE as any, (state) => {
-        console.log("==========REHYDRATE ")
-        state.error = "";
-        state.loading = LoadingState.idle;
-      })
       .addCase(LoginAsync.pending, (state) => {
         state.loading = LoadingState.pending;
         state.error = null;

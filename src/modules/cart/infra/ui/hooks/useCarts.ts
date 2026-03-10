@@ -10,6 +10,7 @@ import {
 } from "../../../slice/CartSlice";
 import { Product } from "../../../../products/models/products/productEntity";
 import { CartsSelector } from "../../../slice/CartSelector";
+import Notify from "../../../../../shared/lib/Notify";
 
 export const useCart = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ export const useCart = () => {
 
   function addTocart(product: Product) {
     dispatch(addToCart({ userId: currentUser?.id, product }));
+    Notify.success("Produit ajoute au panier");
   }
 
   function onCartClick() {

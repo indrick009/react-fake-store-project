@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { REHYDRATE } from "redux-persist";
 import { LoadingState } from "../../../shared/domain/enums/LoadingState";
 import type { Order } from "../models/Order";
-import type { PaymentStatus } from "../models/payment/PaymentMethod";
 import { resolvePaymentState } from "../models/payment/state/PaymentState";
 import { CreateOrderAsync } from "../use-case/create-order/CreateOrderAsync";
 import { PayOrderAsync } from "../use-case/pay-order/PayOrderAsync";
@@ -13,7 +12,6 @@ type OrderState = {
   currentOrder: Order | null;
   loading: LoadingState;
   error: string | null;
-  paymentStatus: PaymentStatus;
   successMessage: string | null;
 };
 
@@ -22,7 +20,6 @@ const initialOrderState: OrderState = {
   currentOrder: null,
   loading: LoadingState.idle,
   error: null,
-  paymentStatus: "idle",
   successMessage: null,
 };
 
@@ -43,12 +40,13 @@ export const OrderSlice = createSlice({
       };
     },
     restartPaymentFlow(state) {
-      const current = resolvePaymentState(state.paymentStatus);
-      state.paymentStatus = current.next("RESET").status;
+      const currentStatus = state.currentOrder?.payment.status ?? "idle";
+      const current = resolvePaymentState(currentStatus);
+      const nextStatus = current.next("RESET").status;
       state.successMessage = null;
       state.error = null;
       if (state.currentOrder) {
-        state.currentOrder.payment.status = state.paymentStatus;
+        state.currentOrder.payment.status = nextStatus;
         state.currentOrder.payment.provider = null;
         state.currentOrder.payment.phoneNumber = null;
       }
@@ -68,7 +66,6 @@ export const OrderSlice = createSlice({
       .addCase(CreateOrderAsync.fulfilled, (state, action) => {
         state.loading = LoadingState.success;
         state.currentOrder = action.payload.order;
-        state.paymentStatus = action.payload.order.payment.status;
       })
       .addCase(CreateOrderAsync.rejected, (state, action) => {
         state.loading = LoadingState.failed;
@@ -82,27 +79,30 @@ export const OrderSlice = createSlice({
         state.error = null;
         if (!state.currentOrder) {
           state.loading = LoadingState.failed;
-          state.paymentStatus = "idle";
           state.error = "Commande introuvable";
           return;
         }
-        const current = resolvePaymentState(state.paymentStatus);
-        state.paymentStatus = current.next("SUBMIT_PHONE").status;
+        const current = resolvePaymentState(state.currentOrder.payment.status);
+        state.currentOrder.payment.status = current.next("SUBMIT_PHONE").status;
       })
       .addCase(PayOrderAsync.fulfilled, (state, action) => {
         state.loading = LoadingState.success;
         state.currentOrder = action.payload.order;
-        const current = resolvePaymentState(state.paymentStatus);
-        state.paymentStatus =
-          action.payload.paymentStatus === "success"
-            ? current.next("PAYMENT_SUCCESS").status
-            : current.next("PAYMENT_FAILED").status;
+        if (state.currentOrder) {
+          const current = resolvePaymentState(state.currentOrder.payment.status);
+          state.currentOrder.payment.status =
+            action.payload.paymentStatus === "success"
+              ? current.next("PAYMENT_SUCCESS").status
+              : current.next("PAYMENT_FAILED").status;
+        }
         state.successMessage = action.payload.message;
       })
       .addCase(PayOrderAsync.rejected, (state, action) => {
         state.loading = LoadingState.failed;
-        const current = resolvePaymentState(state.paymentStatus);
-        state.paymentStatus = current.next("PAYMENT_FAILED").status;
+        if (state.currentOrder) {
+          const current = resolvePaymentState(state.currentOrder.payment.status);
+          state.currentOrder.payment.status = current.next("PAYMENT_FAILED").status;
+        }
         state.successMessage = null;
         const message =
           ((action.payload as { message?: string } | undefined)?.message ??
@@ -113,7 +113,6 @@ export const OrderSlice = createSlice({
         const normalizedMessage = message.toLowerCase().trim();
         if (normalizedMessage.includes("commande introuvable")) {
           state.currentOrder = null;
-          state.paymentStatus = "idle";
           state.successMessage = null;
         }
       });

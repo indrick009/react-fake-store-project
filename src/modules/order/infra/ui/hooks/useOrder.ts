@@ -17,7 +17,6 @@ export const useOrder = () => {
   const currentOrder = useAppSelector(OrderSelectors.currentOrder);
   const loading = useAppSelector(OrderSelectors.loading);
   const error = useAppSelector(OrderSelectors.error);
-  const paymentStatus = useAppSelector(OrderSelectors.paymentStatus);
   const successMessage = useAppSelector(OrderSelectors.successMessage);
 
   const createOrder = (payload: CreateOrderCommand) => {
@@ -49,7 +48,6 @@ export const useOrder = () => {
     currentOrder,
     loading,
     error,
-    paymentStatus,
     successMessage,
     createOrder,
     submitPayment,

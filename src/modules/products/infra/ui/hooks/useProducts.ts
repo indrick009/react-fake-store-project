@@ -30,19 +30,28 @@ export const useProducts = () => {
   const debounceSearch = useDebounce(searchTerm, 800);
 
   useEffect(() => {
+    if (debounceSearch) {
+      queryPagination.updateQueryParams({
+        search: debounceSearch,
+        page: "1",
+        category: "",
+      });
+      return;
+    }
     queryPagination.updateQueryParams({
-      search: debounceSearch,
+      search: "",
       page: queryPagination.page.toString(),
     });
   }, [debounceSearch]);
 
   const handleSearch = (value: string) => {
-    queryPagination.setCategories("")
     setSearchTerm(value);
   };
 
   const setCategories = (value: string) => {
-    setSearchTerm("")
+    if (searchTerm) {
+      setSearchTerm("");
+    }
     queryPagination.setCategories(value);
   };
 

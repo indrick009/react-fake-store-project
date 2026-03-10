@@ -1,5 +1,11 @@
 import { LoadingState } from "../../../../../shared/domain/enums/LoadingState";
+import { useAuth } from "../../../../auth/infra/ui/hooks/useAuth";
+import Cart from "../../../../cart/infra/ui/Cart";
+import { useCart } from "../../../../cart/infra/ui/hooks/useCarts";
+import { useOrder } from "../../../../order/infra/ui/hooks/useOrder";
+import Order from "../../../../order/infra/ui/Order";
 import { useProductsDetails } from "../hooks/useProductsDetails";
+import CartIcon from "./CartIcon";
 
 export default function ProductDetailPage() {
   const {
@@ -11,6 +17,25 @@ export default function ProductDetailPage() {
     onGoToProducts,
     onAddToCart,
   } = useProductsDetails();
+
+  const { isAuthenticated } = useAuth();
+
+  const { isOrderOpen, onOrderClick, onCloseOrder } = useOrder();
+  const {
+    cart,
+    totalQuantity,
+    isCartOpen,
+    onCartClick,
+    onCloseCart,
+    onUpdateQuantity,
+    onRemoveItem,
+    onClearCart,
+  } = useCart();
+
+  const handleCheckoutClick = () => {
+    onCloseCart();
+    onOrderClick();
+  };
 
   if (loadingProductDetails === LoadingState.pending) {
     return (
@@ -48,25 +73,30 @@ export default function ProductDetailPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 pb-20">
-      <button
-        onClick={onGoBack}
-        className="flex items-center gap-2 text-stone-400 hover:text-stone-700 font-body text-sm mb-10 transition-colors cursor-pointer group"
-      >
-        <svg
-          className="w-4 h-4 group-hover:-translate-x-1 transition-transform"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <div className="flex justify-between items-center mb-10 ">
+        <button
+          onClick={onGoBack}
+          className="flex items-center gap-2 text-stone-400 hover:text-stone-700 font-body text-sm transition-colors cursor-pointer group"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-        Retour
-      </button>
+          <svg
+            className="w-4 h-4 group-hover:-translate-x-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          Retour
+        </button>
+        {isAuthenticated && (
+          <CartIcon onCartClick={onCartClick} totalQuantity={totalQuantity} />
+        )}
+      </div>
 
       <div className="flex flex-col md:flex-row gap-12 items-start">
         <div className="w-full md:w-96 flex-shrink-0">
@@ -102,8 +132,8 @@ export default function ProductDetailPage() {
               ))}
             </div>
             <span className="text-stone-500 font-body text-sm">
-              {parseFloat(selectedProduct.rating.rate.toString()).toFixed(1)} / 5
-              <span className="text-stone-300 mx-2">·</span>
+              {parseFloat(selectedProduct.rating.rate.toString()).toFixed(1)} /
+              5<span className="text-stone-300 mx-2">·</span>
               {selectedProduct.rating.count} avis
             </span>
           </div>
@@ -115,12 +145,12 @@ export default function ProductDetailPage() {
           <div className="border-t border-stone-100 mb-8" />
 
           <div className="flex items-center justify-between">
-            <span className="text-4xl font-bold text-stone-900">
+            <span className="text-2xl md:text-4xl font-bold text-stone-900">
               ${selectedProduct.price.toFixed(2)}
             </span>
             <button
               onClick={onAddToCart}
-              className="flex items-center gap-2 bg-primary-500 text-white font-body font-medium px-6 py-3 rounded-full hover:bg-primary-700 transition-colors duration-200 cursor-pointer text-sm"
+              className="flex items-center gap-2 bg-primary-500 text-white font-body font-medium px-6 py-3 rounded-full hover:bg-primary-700 transition-colors duration-200 cursor-pointer text-[12px] md:text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z" />
@@ -131,7 +161,24 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
+
+      {isAuthenticated && isCartOpen && (
+        <Cart
+          cart={cart}
+          onCartClick={onCloseCart}
+          onUpdateQuantity={onUpdateQuantity}
+          onRemoveItem={onRemoveItem}
+          onClearCart={onClearCart}
+          onCheckout={handleCheckoutClick}
+        />
+      )}
+      {isAuthenticated && isOrderOpen && (
+        <Order
+          cart={cart}
+          onOrderClick={onCloseOrder}
+          onClearCart={onClearCart}
+        />
+      )}
     </div>
   );
 }
-
