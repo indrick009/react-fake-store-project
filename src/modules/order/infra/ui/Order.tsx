@@ -63,8 +63,7 @@ export default function Order({
     onOrderClick();
   };
 
-  const paymentStatus: PaymentStatus =
-    currentOrder?.payment.status ?? "idle";
+  const paymentStatus: PaymentStatus = currentOrder?.payment.status ?? "idle";
   const step = !currentOrder ? 1 : paymentStatus === "success" ? 3 : 2;
   const giftOptions = [
     {

@@ -90,10 +90,7 @@ export const OrderSlice = createSlice({
         state.currentOrder = action.payload.order;
         if (state.currentOrder) {
           const current = resolvePaymentState(state.currentOrder.payment.status);
-          state.currentOrder.payment.status =
-            action.payload.paymentStatus === "success"
-              ? current.next("PAYMENT_SUCCESS").status
-              : current.next("PAYMENT_FAILED").status;
+          state.currentOrder.payment.status = current.next("PAYMENT_SUCCESS").status;
         }
         state.successMessage = action.payload.message;
       })
