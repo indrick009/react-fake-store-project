@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LoadingState } from "../../../shared/domain/enums/LoadingState";
 import { LoginAsync } from "../use-case/login/LoginAsync";
-import { REHYDRATE } from "redux-persist";
 
 type AuthState = {
   accessToken: string | null;
