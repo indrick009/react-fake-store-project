@@ -25,7 +25,7 @@ export function FilterSection() {
   const safeCategories = Array.isArray(categories) ? categories : [];
 
   return (
-    <aside className="hidden md:block md:sticky md:top-[88px] md:self-start bg-white/90 backdrop-blur-sm rounded-2xl border border-stone-200 p-5 shadow-sm">
+    <aside className="hidden md:block md:sticky md:top-[88px] md:self-start bg-white/90 backdrop-blur-sm rounded-2xl border border-stone-200 p-5 shadow-sm flex-[0_0_19%]">
       <div className="text-lg font-bold text-stone-900 mb-5">Explorer</div>
 
       <div className="space-y-5">
