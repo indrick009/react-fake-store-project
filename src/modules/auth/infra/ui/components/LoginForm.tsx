@@ -1,32 +1,9 @@
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { useAuth } from "../hooks/useAuth";
-import { LoadingState } from "../../../../../shared/domain/enums/LoadingState";
+import { useLoginForm } from "../hooks/useLoginForm";
 import PrimaryButton from "../../../../../shared/components/PrimaryButton";
 
-type LoginFormValues = {
-  username: string;
-  password: string;
-};
-
 const LoginForm = () => {
-  const { login, loading, error } = useAuth();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
-    mode: "onSubmit",
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-  });
-  const isSubmitting = loading === LoadingState.pending;
-
-  const onSubmit = ({ username, password }: LoginFormValues) => {
-    login({ username, password });
-  };
+  const { register, errors, submit, isSubmitting, error } = useLoginForm();
 
   return (
     <motion.div
@@ -37,7 +14,7 @@ const LoginForm = () => {
     >
       <div className="text-3xl font-bold mb-6 text-gray-800">Welcome Back</div>
 
-      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-5" onSubmit={submit}>
         <input
           type="text"
           placeholder="Username"
@@ -51,7 +28,9 @@ const LoginForm = () => {
           className="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
         {errors.username && (
-          <p className="text-sm text-red-500 -mt-3">{errors.username.message}</p>
+          <p className="text-sm text-red-500 -mt-3">
+            {errors.username.message}
+          </p>
         )}
 
         <input
@@ -67,7 +46,9 @@ const LoginForm = () => {
           className="w-full px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
         {errors.password && (
-          <p className="text-sm text-red-500 -mt-3">{errors.password.message}</p>
+          <p className="text-sm text-red-500 -mt-3">
+            {errors.password.message}
+          </p>
         )}
 
         <PrimaryButton

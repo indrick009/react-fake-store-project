@@ -15,7 +15,6 @@ type ProductState = EntityState<Product, number> & {
 
 const initialProductsState: ProductState = ProductEntityAdapter.getInitialState(
   {
-    products: [],
     loading: LoadingState.idle,
     error: null,
     selectedProduct: null,

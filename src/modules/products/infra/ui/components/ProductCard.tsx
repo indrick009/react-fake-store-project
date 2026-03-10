@@ -97,7 +97,7 @@ export default function ProductCard({
               }
             }}
             disabled={loadingAddToCart}
-            className="hidden md:block bg-primary-500 text-white text-[10px]  md:text-xs font-body font-medium px-4 py-2 rounded-full hover:bg-primary-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="hidden md:block bg-primary-500 text-white text-[10px]  md:text-[13px] font-body font-medium px-2 py-1 rounded-full hover:bg-primary-700 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loadingAddToCart ? (
               <span className="flex items-center gap-1">
@@ -123,7 +123,7 @@ export default function ProductCard({
                 ...
               </span>
             ) : (
-              "+ Panier"
+            <span className="text-[10px]">+ Panier</span>
             )}
           </button>
         </div>

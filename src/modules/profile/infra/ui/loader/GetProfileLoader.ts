@@ -5,6 +5,6 @@ import { GetProfileAsync } from "../../../use-case/GetProfileAsync";
 export const GetProfileLoader =
   (store: AppStore): LoaderFunction =>
   (_) => {
-    store.dispatch(GetProfileAsync(null));
+    store.dispatch(GetProfileAsync());
     return null;
   };

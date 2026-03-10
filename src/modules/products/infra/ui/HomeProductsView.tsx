@@ -9,7 +9,8 @@ import CategoriesSection from "./components/CategoriesSection";
 import { SearchSection } from "./components/SearchSection";
 
 export default function HomeProductsView() {
-  const { allProducts, loadingProducts, error } = useProducts();
+  const { allProducts, loadingProducts, error, searchTerm, handleSearch } =
+    useProducts();
   const { addTocart } = useCart();
   const navigate = useNavigate();
 
@@ -24,7 +25,7 @@ export default function HomeProductsView() {
             <p className="text-primary-300 font-body font-medium text-sm tracking-widest uppercase mb-3">
               Bienvenue sur
             </p>
-            <div className="flex text-3xl sm:text-4xl font-bold mb-6 gap-3">
+            <div className="flex text-3xl sm:text-5xl font-bold mb-6 gap-3">
               <div>
                 <span className="text-primary-500">Clean</span>
                 <span className="text-white">Shop</span>
@@ -34,7 +35,7 @@ export default function HomeProductsView() {
           </div>
 
           <div className="w-full max-w-md md:hidden">
-            <SearchSection />
+            <SearchSection searchTerm={searchTerm} handleSearch={handleSearch} />
           </div>
         </div>
       </section>

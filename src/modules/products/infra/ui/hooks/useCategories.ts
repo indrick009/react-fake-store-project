@@ -11,7 +11,7 @@ export const useCategories = () => {
   const catError = useAppSelector(CategoriesSelectors.error);
 
   const getProductCategoriesDetails = useCallback(() => {
-    return dispatch(GetProductCategoriesAsync(null));
+    return dispatch(GetProductCategoriesAsync());
   }, [dispatch]);
 
   return {

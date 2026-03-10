@@ -13,7 +13,7 @@ export const listenWhenProfileRefresh = () => {
     actionCreator: ProfileActions,
     effect: async (_, { dispatch, getState }) => {
       if (getState().categoriesReducer.loading === LoadingState.pending) return;
-      dispatch(GetProfileAsync(null));
+      dispatch(GetProfileAsync());
     },
   });
 };

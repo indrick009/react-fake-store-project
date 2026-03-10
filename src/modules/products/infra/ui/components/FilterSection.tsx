@@ -6,6 +6,8 @@ import { SearchSection } from "./SearchSection";
 
 export function FilterSection() {
   const {
+    searchTerm,
+    handleSearch,
     selectedCategory,
     setCategories,
     page,
@@ -27,7 +29,7 @@ export function FilterSection() {
       <div className="text-lg font-bold text-stone-900 mb-5">Explorer</div>
 
       <div className="space-y-5">
-        <SearchSection />
+        <SearchSection searchTerm={searchTerm} handleSearch={handleSearch} />
 
         <div>
           <p className="text-xs uppercase tracking-wide text-stone-400 font-body mb-2">

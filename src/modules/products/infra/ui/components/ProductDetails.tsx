@@ -1,32 +1,16 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { LoadingState } from "../../../../../shared/domain/enums/LoadingState";
-import { useEffect } from "react";
 import { useProductsDetails } from "../hooks/useProductsDetails";
-import { useCart } from "../../../../cart/infra/ui/hooks/useCarts";
-import { useAuth } from "../../../../auth/infra/ui/hooks/useAuth";
-import { ProductRoutes } from "../../../../../routes/routes";
 
 export default function ProductDetailPage() {
-  const { id } = useParams();
-  const productId = id ? Number(id) : undefined;
   const {
     selectedProduct,
     loadingProductDetails,
     errorProductDetails,
-    getProductDetails,
+    stars,
+    onGoBack,
+    onGoToProducts,
+    onAddToCart,
   } = useProductsDetails();
-
-  const { isAuthenticated } = useAuth();
-
-  const { addTocart } = useCart();
-
-  const navigate = useNavigate();
-  const stars = selectedProduct ? Math.round(selectedProduct.rating.rate) : 0;
-
-  useEffect(() => {
-    if (!productId || Number.isNaN(productId)) return;
-    getProductDetails(productId);
-  }, [getProductDetails, productId]);
 
   if (loadingProductDetails === LoadingState.pending) {
     return (
@@ -53,10 +37,10 @@ export default function ProductDetailPage() {
           {errorProductDetails ?? "Produit introuvable."}
         </p>
         <button
-          onClick={() => navigate("/")}
+          onClick={onGoToProducts}
           className="bg-stone-900 text-white px-6 py-3 rounded-xl font-body font-medium hover:bg-amber-500 transition-colors cursor-pointer"
         >
-          ← Retour à la boutique
+          Retour a la boutique
         </button>
       </div>
     );
@@ -64,9 +48,8 @@ export default function ProductDetailPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 pb-20">
-      {/* Bouton retour */}
       <button
-        onClick={() => navigate(-1)}
+        onClick={onGoBack}
         className="flex items-center gap-2 text-stone-400 hover:text-stone-700 font-body text-sm mb-10 transition-colors cursor-pointer group"
       >
         <svg
@@ -86,7 +69,6 @@ export default function ProductDetailPage() {
       </button>
 
       <div className="flex flex-col md:flex-row gap-12 items-start">
-        {/* Image */}
         <div className="w-full md:w-96 flex-shrink-0">
           <div className="bg-stone-50 rounded-3xl p-10 flex items-center justify-center h-80 border border-stone-100">
             <img
@@ -97,7 +79,6 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {/* Infos */}
         <div className="flex-1">
           <span className="inline-block bg-amber-100 text-amber-800 text-xs font-body font-medium px-3 py-1 rounded-full capitalize mb-4">
             {selectedProduct.category}
@@ -107,7 +88,6 @@ export default function ProductDetailPage() {
             {selectedProduct.title}
           </div>
 
-          {/* Note */}
           <div className="flex items-center gap-3 mb-6">
             <div className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -122,8 +102,8 @@ export default function ProductDetailPage() {
               ))}
             </div>
             <span className="text-stone-500 font-body text-sm">
-              {parseFloat(selectedProduct.rating.rate.toString()).toFixed(1)} /
-              5<span className="text-stone-300 mx-2">·</span>
+              {parseFloat(selectedProduct.rating.rate.toString()).toFixed(1)} / 5
+              <span className="text-stone-300 mx-2">·</span>
               {selectedProduct.rating.count} avis
             </span>
           </div>
@@ -134,19 +114,12 @@ export default function ProductDetailPage() {
 
           <div className="border-t border-stone-100 mb-8" />
 
-
           <div className="flex items-center justify-between">
             <span className="text-4xl font-bold text-stone-900">
               ${selectedProduct.price.toFixed(2)}
             </span>
             <button
-              onClick={() => {
-                if (isAuthenticated) {
-                  addTocart(selectedProduct);
-                } else {
-                  navigate(ProductRoutes.login);
-                }
-              }}
+              onClick={onAddToCart}
               className="flex items-center gap-2 bg-primary-500 text-white font-body font-medium px-6 py-3 rounded-full hover:bg-primary-700 transition-colors duration-200 cursor-pointer text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -161,3 +134,4 @@ export default function ProductDetailPage() {
     </div>
   );
 }
+

@@ -1,7 +1,9 @@
-import { useProducts } from "../hooks/useProducts";
+interface OwnProps {
+  searchTerm: string;
+  handleSearch: (value: string) => void;
+}
 
-export function SearchSection() {
-  const { searchTerm, handleSearch } = useProducts();
+export function SearchSection({ searchTerm, handleSearch }: OwnProps) {
   return (
     <div className="relative">
       <svg
