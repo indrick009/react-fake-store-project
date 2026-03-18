@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { AppDispatch, RootState } from "./create-store";
 import type { Dependencies } from "./dependencies";
-import { getErrorState } from "../errors/getErrorState";
+import { getErrorState } from "../shared/errors/getErrorState";
 
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: RootState;

@@ -15,7 +15,7 @@ export default function HomeProductsView() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-stone-50 font-body">
+    <div className="min-h-screen bg-white font-body">
       <Navbar />
 
       <section className="h-[320px] md:h-[520px] relative bg-[url('https://media.istockphoto.com/id/2155795543/photo/a-back-view-of-a-woman-holding-shopping-bags-in-front-of-a-store-window.jpg?s=2048x2048&w=is&k=20&c=WIkI5826AKsZ0Q7Ggc-KB5AiWzAGLcjdyEoNIgOZkyM=')] bg-cover bg-center text-white py-16 px-4 text-center">
