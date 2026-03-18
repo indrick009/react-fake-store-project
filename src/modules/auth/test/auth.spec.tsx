@@ -28,9 +28,6 @@ describe("AUTH LOGIN TEST", () => {
       username: "test@gmail.com",
       password: "1234567890"
     };
-    const authState = store.getState().loginReducer;
-
-    console.log(authState, "befforre")
 
     await act(async () => {
       current.onSubmit(formData);
