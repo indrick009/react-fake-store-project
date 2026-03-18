@@ -4,7 +4,9 @@ import PrimaryButton from "../../../../../shared/components/PrimaryButton";
 import AppInput from "../../../../../shared/components/AppInput";
 
 const LoginForm = () => {
-  const { register, errors, submit, isSubmitting, error } = useLoginForm();
+  const { form, isSubmitting, error,onSubmit } = useLoginForm();
+
+  const {register,formState:{errors}} = form
 
   return (
     <motion.div
@@ -15,7 +17,7 @@ const LoginForm = () => {
     >
       <div className="text-3xl font-bold mb-6 text-gray-800">Welcome Back</div>
 
-      <form className="space-y-5" onSubmit={submit}>
+      <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
         <AppInput
           type="text"
           placeholder="Username"
