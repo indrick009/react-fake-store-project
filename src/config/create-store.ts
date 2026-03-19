@@ -1,4 +1,4 @@
-import { rootReducer } from "../reducers/reducer";
+import {rootReducer} from "../reducers/reducer";
 import {
   FLUSH,
   PAUSE,
@@ -9,15 +9,15 @@ import {
   persistReducer,
 } from "redux-persist";
 import localforage from "localforage";
-import type { Dependencies } from "./dependencies";
+import type {Dependencies} from "./dependencies";
 import {
   configureStore,
   type Action,
   type ThunkDispatch,
 } from "@reduxjs/toolkit";
-import { isDevMode } from "./env";
-import { createAppListenerMiddleware } from "./create-app-listener-middleware";
-import type { PersistPartial } from "redux-persist/es/persistReducer";
+import {isDevMode} from "./env";
+import {createAppListenerMiddleware} from "./create-app-listener-middleware";
+import type {PersistPartial} from "redux-persist/es/persistReducer";
 
 const CURRENT_STORE_VERSION = 1;
 
@@ -49,7 +49,8 @@ export const createStore = (
 
 export const createTestStore = (
   dependencies: Partial<Dependencies> = {},
-  preloadedState?: Partial<RootState>
+  preloadedState?: Partial<RootState>,
+  additionalMiddleware: any[] = []
 ) => configureStore({
   reducer: rootReducer,
   devTools: false,
@@ -58,7 +59,7 @@ export const createTestStore = (
       thunk: {
         extraArgument: dependencies as Dependencies,
       },
-    }),
+    }).concat(additionalMiddleware).prepend(createAppListenerMiddleware.middleware) as any,
   preloadedState: preloadedState as any,
 }) as AppStore;
 
